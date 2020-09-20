@@ -1,0 +1,16 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}20 Sep 2020, 10:02:10
+{txt}
+{com}. 
+. * import csv file
+. import delimited foreign_raw.csv
+{res}{text}(7 vars, 5,076 obs)
+
+{com}. 
+{txt}end of do-file
+
+{com}. 

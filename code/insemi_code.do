@@ -4,6 +4,9 @@ DO-FILE FOR OKAMURO SEMINAR JUNIOR PROJECT
 
 */
 
+
+* ########################### CREATION OF THE MAIN DATASET BEGINS ########################### *
+
 * delate all stored data
 clear all
 
@@ -47,9 +50,18 @@ replace time_id = 8 if quarter == 1 & year == 2020
 * create a new variable for prefecture id
 egen pref_id = group(pref)
 
-* save the main dataset as main.dta
-save main
 
+* commanted command below
+/*
+save main
+*/
+* ########################### CREATION OF THE MAIN DATASET ENDS ########################### *
+
+
+
+* ########################### ANALYSIS STARTS ########################### *
+
+* save the main dataset as main.dta
 keep if item == "Group Package"
 
 * set the dataset as a panel data
@@ -121,3 +133,4 @@ keep if item == "Others"
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 
+* ########################### ANALYSIS ENDS ########################### *

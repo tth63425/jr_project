@@ -3,7 +3,7 @@
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res}22 Sep 2020, 00:08:37
+ {txt}opened on:  {res}22 Sep 2020, 00:13:53
 {txt}
 {com}. 
 . * import csv file
@@ -71,6 +71,17 @@
 . egen pref_id = group(pref)
 {txt}
 {com}. 
+. 
+. * commanted command below
+. /*
+> save main
+> */
+. * ########################### CREATION OF THE MAIN DATASET ENDS ########################### *
+. 
+. 
+. 
+. * ########################### ANALYSIS STARTS ########################### *
+. 
 . * save the main dataset as main.dta
 . keep if item == "Group Package"
 {txt}(4,653 observations deleted)
@@ -504,6 +515,8 @@
 {hline 13}{c BT}{hline 64}
 
 {com}. 
+. * ########################### ANALYSIS ENDS ########################### *
+. 
 {txt}end of do-file
 
 {com}. 

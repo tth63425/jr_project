@@ -5,7 +5,7 @@ DO-FILE FOR OKAMURO SEMINAR JUNIOR PROJECT
 */
 
 
-* ########################### CREATION OF THE MAIN DATASET BEGINS ########################### *
+* ########################### CREATION OF THE MAIN DATASET BEGIN ########################### *
 
 * delate all stored data
 clear all
@@ -55,11 +55,11 @@ egen pref_id = group(pref)
 /*
 save main
 */
-* ########################### CREATION OF THE MAIN DATASET ENDS ########################### *
+* ########################### CREATION OF THE MAIN DATASET END ########################### *
 
 
 
-* ########################### ANALYSIS STARTS ########################### *
+* ########################### ANALYSIS 1 START ########################### *
 
 * save the main dataset as main.dta
 keep if item == "Group Package"
@@ -133,4 +133,75 @@ keep if item == "Others"
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 
-* ########################### ANALYSIS ENDS ########################### *
+* ########################### ANALYSIS 1 END ########################### *
+
+
+
+* ########################### ANALYSIS 2 START ########################### *
+clear all
+use main
+keep if item == "Group Package"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Individual Package"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Accommodation"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Food"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Overall"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Train"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Others"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Leisure"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Shopping"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Others"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+
+* ########################### ANALYSIS 2 END ########################### *

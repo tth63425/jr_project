@@ -519,4 +519,567 @@
 . 
 {txt}end of do-file
 
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Individual Package"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0895{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0612{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     9.60
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 10246.66{col 26}{space 2}  11457.7{col 37}{space 1}    0.89{col 46}{space 3}0.376{col 54}{space 4} -12816.5{col 67}{space 3} 33309.82
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}  59834.1{col 26}{space 2} 12154.91{col 37}{space 1}    4.92{col 46}{space 3}0.000{col 54}{space 4} 35367.53{col 67}{space 3} 84300.67
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24285.15{col 26}{space 2} 9879.488{col 37}{space 1}    2.46{col 46}{space 3}0.018{col 54}{space 4} 4398.767{col 67}{space 3} 44171.52
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 56204.74{col 26}{space 2} 12606.67{col 37}{space 1}    4.46{col 46}{space 3}0.000{col 54}{space 4} 30828.83{col 67}{space 3} 81580.64
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 152535.5{col 26}{space 2} 5620.607{col 37}{space 1}   27.14{col 46}{space 3}0.000{col 54}{space 4} 141221.8{col 67}{space 3} 163849.1
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 59067.314
+     {txt}sigma_e {c |} {res} 87376.454
+         {txt}rho {c |} {res} .31365296{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
+{txt}
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Individual Package"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0895{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0612{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     9.60
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 10246.66{col 26}{space 2}  11457.7{col 37}{space 1}    0.89{col 46}{space 3}0.376{col 54}{space 4} -12816.5{col 67}{space 3} 33309.82
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}  59834.1{col 26}{space 2} 12154.91{col 37}{space 1}    4.92{col 46}{space 3}0.000{col 54}{space 4} 35367.53{col 67}{space 3} 84300.67
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24285.15{col 26}{space 2} 9879.488{col 37}{space 1}    2.46{col 46}{space 3}0.018{col 54}{space 4} 4398.767{col 67}{space 3} 44171.52
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 56204.74{col 26}{space 2} 12606.67{col 37}{space 1}    4.46{col 46}{space 3}0.000{col 54}{space 4} 30828.83{col 67}{space 3} 81580.64
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 152535.5{col 26}{space 2} 5620.607{col 37}{space 1}   27.14{col 46}{space 3}0.000{col 54}{space 4} 141221.8{col 67}{space 3} 163849.1
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 59067.314
+     {txt}sigma_e {c |} {res} 87376.454
+         {txt}rho {c |} {res} .31365296{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Accommodation"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1189{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0489{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     5.22
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0015
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1656.465{col 26}{space 2} 589.8784{col 37}{space 1}    2.81{col 46}{space 3}0.007{col 54}{space 4} 469.1017{col 67}{space 3} 2843.829
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-3651.895{col 26}{space 2} 1229.942{col 37}{space 1}   -2.97{col 46}{space 3}0.005{col 54}{space 4} -6127.64{col 67}{space 3} -1176.15
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-2406.553{col 26}{space 2} 1104.568{col 37}{space 1}   -2.18{col 46}{space 3}0.035{col 54}{space 4}-4629.932{col 67}{space 3}-183.1736
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-3080.118{col 26}{space 2} 1031.927{col 37}{space 1}   -2.98{col 46}{space 3}0.005{col 54}{space 4} -5157.28{col 67}{space 3}-1002.956
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 22912.13{col 26}{space 2} 750.3182{col 37}{space 1}   30.54{col 46}{space 3}0.000{col 54}{space 4} 21401.82{col 67}{space 3} 24422.44
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 6142.1854
+     {txt}sigma_e {c |} {res} 5086.7388
+         {txt}rho {c |} {res} .59317042{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Food"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1527{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0429{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}    11.88
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1090.627{col 26}{space 2}  336.433{col 37}{space 1}    3.24{col 46}{space 3}0.002{col 54}{space 4} 413.4223{col 67}{space 3} 1767.831
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-2037.942{col 26}{space 2}  495.085{col 37}{space 1}   -4.12{col 46}{space 3}0.000{col 54}{space 4}-3034.496{col 67}{space 3}-1041.388
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-1330.524{col 26}{space 2} 529.8568{col 37}{space 1}   -2.51{col 46}{space 3}0.016{col 54}{space 4} -2397.07{col 67}{space 3}-263.9776
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-2454.498{col 26}{space 2} 457.1956{col 37}{space 1}   -5.37{col 46}{space 3}0.000{col 54}{space 4}-3374.785{col 67}{space 3}-1534.211
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 11999.82{col 26}{space 2} 333.7034{col 37}{space 1}   35.96{col 46}{space 3}0.000{col 54}{space 4} 11328.11{col 67}{space 3} 12671.53
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 4567.1464
+     {txt}sigma_e {c |} {res} 2772.5313
+         {txt}rho {c |} {res}  .7307155{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Overall"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0269{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0135{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     3.86
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0087
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-274.8113{col 26}{space 2} 225.0781{col 37}{space 1}   -1.22{col 46}{space 3}0.228{col 54}{space 4}-727.8701{col 67}{space 3} 178.2475
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-424.9001{col 26}{space 2} 191.8149{col 37}{space 1}   -2.22{col 46}{space 3}0.032{col 54}{space 4}-811.0035{col 67}{space 3}-38.79674
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 116.7407{col 26}{space 2} 238.1304{col 37}{space 1}    0.49{col 46}{space 3}0.626{col 54}{space 4}-362.5909{col 67}{space 3} 596.0724
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 329.9788{col 26}{space 2} 243.4083{col 37}{space 1}    1.36{col 46}{space 3}0.182{col 54}{space 4}-159.9768{col 67}{space 3} 819.9343
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3274.048{col 26}{space 2} 116.8182{col 37}{space 1}   28.03{col 46}{space 3}0.000{col 54}{space 4} 3038.905{col 67}{space 3}  3509.19
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 1512.5939
+     {txt}sigma_e {c |} {res} 1580.6483
+         {txt}rho {c |} {res} .47800964{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Train"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0178{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0127{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     2.05
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.1031
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-6.038054{col 26}{space 2} 286.5154{col 37}{space 1}   -0.02{col 46}{space 3}0.983{col 54}{space 4}-582.7636{col 67}{space 3} 570.6875
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-442.3248{col 26}{space 2} 212.4172{col 37}{space 1}   -2.08{col 46}{space 3}0.043{col 54}{space 4}-869.8984{col 67}{space 3}-14.75117
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-303.7033{col 26}{space 2}  267.289{col 37}{space 1}   -1.14{col 46}{space 3}0.262{col 54}{space 4}-841.7281{col 67}{space 3} 234.3215
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-574.3581{col 26}{space 2} 289.0263{col 37}{space 1}   -1.99{col 46}{space 3}0.053{col 54}{space 4}-1156.138{col 67}{space 3}  7.42168
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2426.637{col 26}{space 2} 131.8109{col 37}{space 1}   18.41{col 46}{space 3}0.000{col 54}{space 4} 2161.315{col 67}{space 3} 2691.958
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 1092.1192
+     {txt}sigma_e {c |} {res} 1791.0181
+         {txt}rho {c |} {res} .27104473{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Bus/Taxi"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0288{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0206{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     3.06
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0258
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  185.846{col 26}{space 2} 148.2544{col 37}{space 1}    1.25{col 46}{space 3}0.216{col 54}{space 4}-112.5747{col 67}{space 3} 484.2666
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-413.0942{col 26}{space 2} 177.6638{col 37}{space 1}   -2.33{col 46}{space 3}0.025{col 54}{space 4}-770.7128{col 67}{space 3}-55.47554
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-61.36144{col 26}{space 2} 191.3211{col 37}{space 1}   -0.32{col 46}{space 3}0.750{col 54}{space 4}-446.4708{col 67}{space 3} 323.7479
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-141.3386{col 26}{space 2} 169.8988{col 37}{space 1}   -0.83{col 46}{space 3}0.410{col 54}{space 4}-483.3273{col 67}{space 3}   200.65
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2193.851{col 26}{space 2} 112.8782{col 37}{space 1}   19.44{col 46}{space 3}0.000{col 54}{space 4} 1966.639{col 67}{space 3} 2421.063
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  712.1735
+     {txt}sigma_e {c |} {res} 1172.5661
+         {txt}rho {c |} {res} .26948115{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Others"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0402{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0000{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0334{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     1.97
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.1157
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-1449.214{col 26}{space 2} 1254.611{col 37}{space 1}   -1.16{col 46}{space 3}0.254{col 54}{space 4}-3974.616{col 67}{space 3} 1076.187
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-684.3862{col 26}{space 2} 821.8496{col 37}{space 1}   -0.83{col 46}{space 3}0.409{col 54}{space 4}-2338.684{col 67}{space 3} 969.9113
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 184.9825{col 26}{space 2} 669.3329{col 37}{space 1}    0.28{col 46}{space 3}0.784{col 54}{space 4}-1162.315{col 67}{space 3}  1532.28
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 3592.947{col 26}{space 2} 1508.633{col 37}{space 1}    2.38{col 46}{space 3}0.021{col 54}{space 4} 556.2271{col 67}{space 3} 6629.667
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 6309.041{col 26}{space 2} 338.5688{col 37}{space 1}   18.63{col 46}{space 3}0.000{col 54}{space 4} 5627.538{col 67}{space 3} 6990.545
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 3345.7926
+     {txt}sigma_e {c |} {res} 7648.6344
+         {txt}rho {c |} {res} .16061665{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Leisure"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0662{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0423{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     4.67
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0030
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1271.926{col 26}{space 2} 793.4533{col 37}{space 1}    1.60{col 46}{space 3}0.116{col 54}{space 4}-325.2125{col 67}{space 3} 2869.065
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-3709.423{col 26}{space 2} 1413.436{col 37}{space 1}   -2.62{col 46}{space 3}0.012{col 54}{space 4}-6554.523{col 67}{space 3}-864.3227
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-2500.688{col 26}{space 2} 1460.862{col 37}{space 1}   -1.71{col 46}{space 3}0.094{col 54}{space 4} -5441.25{col 67}{space 3} 439.8739
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-2680.328{col 26}{space 2} 1501.053{col 37}{space 1}   -1.79{col 46}{space 3}0.081{col 54}{space 4}-5701.791{col 67}{space 3}  341.136
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 10218.63{col 26}{space 2} 979.3626{col 37}{space 1}   10.43{col 46}{space 3}0.000{col 54}{space 4} 8247.274{col 67}{space 3} 12189.98
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  4923.046
+     {txt}sigma_e {c |} {res} 6678.4255
+         {txt}rho {c |} {res} .35207981{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Shopping"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0659{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0078{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     5.63
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0009
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 429.3253{col 26}{space 2} 554.4421{col 37}{space 1}    0.77{col 46}{space 3}0.443{col 54}{space 4}-686.7088{col 67}{space 3} 1545.359
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-1664.968{col 26}{space 2} 430.3342{col 37}{space 1}   -3.87{col 46}{space 3}0.000{col 54}{space 4}-2531.185{col 67}{space 3}-798.7497
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-1994.928{col 26}{space 2}  542.745{col 37}{space 1}   -3.68{col 46}{space 3}0.001{col 54}{space 4}-3087.417{col 67}{space 3}-902.4388
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-1633.587{col 26}{space 2} 456.6577{col 37}{space 1}   -3.58{col 46}{space 3}0.001{col 54}{space 4}-2552.791{col 67}{space 3}-714.3823
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 16889.56{col 26}{space 2} 279.8476{col 37}{space 1}   60.35{col 46}{space 3}0.000{col 54}{space 4} 16326.26{col 67}{space 3} 17452.87
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 9702.8971
+     {txt}sigma_e {c |} {res} 3614.4569
+         {txt}rho {c |} {res} .87814349{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Others"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1043{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0765{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     4.03
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0070
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1718.942{col 26}{space 2} 483.3855{col 37}{space 1}    3.56{col 46}{space 3}0.001{col 54}{space 4} 745.9376{col 67}{space 3} 2691.947
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 547.6736{col 26}{space 2} 234.8177{col 37}{space 1}    2.33{col 46}{space 3}0.024{col 54}{space 4} 75.01002{col 67}{space 3} 1020.337
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 231.9807{col 26}{space 2}  230.755{col 37}{space 1}    1.01{col 46}{space 3}0.320{col 54}{space 4}-232.5051{col 67}{space 3} 696.4665
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 624.3719{col 26}{space 2}  383.333{col 37}{space 1}    1.63{col 46}{space 3}0.110{col 54}{space 4}-147.2373{col 67}{space 3} 1395.981
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 570.2076{col 26}{space 2} 200.3897{col 37}{space 1}    2.85{col 46}{space 3}0.007{col 54}{space 4}  166.844{col 67}{space 3} 973.5712
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 1434.2706
+     {txt}sigma_e {c |} {res} 2377.1778
+         {txt}rho {c |} {res} .26687906{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1559{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0588{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     7.32
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0001
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 8152.879{col 26}{space 2} 4439.335{col 37}{space 1}    1.84{col 46}{space 3}0.073{col 54}{space 4}-783.0379{col 67}{space 3}  17088.8
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 27345.94{col 26}{space 2}  5165.38{col 37}{space 1}    5.29{col 46}{space 3}0.000{col 54}{space 4} 16948.57{col 67}{space 3} 37743.31
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 9496.844{col 26}{space 2} 3046.968{col 37}{space 1}    3.12{col 46}{space 3}0.003{col 54}{space 4} 3363.616{col 67}{space 3} 15630.07
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 25143.82{col 26}{space 2} 5299.412{col 37}{space 1}    4.74{col 46}{space 3}0.000{col 54}{space 4} 14476.66{col 67}{space 3} 35810.99
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 127999.9{col 26}{space 2} 2988.101{col 37}{space 1}   42.84{col 46}{space 3}0.000{col 54}{space 4} 121985.1{col 67}{space 3} 134014.6
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 39492.599
+     {txt}sigma_e {c |} {res} 29780.383
+         {txt}rho {c |} {res} .63749931{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Food"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1527{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0429{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}    11.88
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1090.627{col 26}{space 2}  336.433{col 37}{space 1}    3.24{col 46}{space 3}0.002{col 54}{space 4} 413.4223{col 67}{space 3} 1767.831
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-2037.942{col 26}{space 2}  495.085{col 37}{space 1}   -4.12{col 46}{space 3}0.000{col 54}{space 4}-3034.496{col 67}{space 3}-1041.388
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-1330.524{col 26}{space 2} 529.8568{col 37}{space 1}   -2.51{col 46}{space 3}0.016{col 54}{space 4} -2397.07{col 67}{space 3}-263.9776
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-2454.498{col 26}{space 2} 457.1956{col 37}{space 1}   -5.37{col 46}{space 3}0.000{col 54}{space 4}-3374.785{col 67}{space 3}-1534.211
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 11999.82{col 26}{space 2} 333.7034{col 37}{space 1}   35.96{col 46}{space 3}0.000{col 54}{space 4} 11328.11{col 67}{space 3} 12671.53
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 4567.1464
+     {txt}sigma_e {c |} {res} 2772.5313
+         {txt}rho {c |} {res}  .7307155{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
 {com}. 

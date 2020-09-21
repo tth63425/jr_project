@@ -47,15 +47,77 @@ replace time_id = 8 if quarter == 1 & year == 2020
 * create a new variable for prefecture id
 egen pref_id = group(pref)
 
+* save the main dataset as main.dta
+save main
 
-* extract group packege data
-keep if item == "Food"
+keep if item == "Group Package"
 
 * set the dataset as a panel data
 xtset pref_id time_id
 
 * regression analysis
-xtreg consumption project, fe vce(cluster pref_id) 
+xtreg consumption project, fe vce(cluster pref_id)
 
 
+* clear all data in memory
+clear all
+* load main dataset
+use main
+keep if item == "Individual Package"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Accommodation"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Food"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Overall"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Train"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Transportation - Others"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Leisure"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Shopping"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+
+clear all
+use main
+keep if item == "Others"
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
 

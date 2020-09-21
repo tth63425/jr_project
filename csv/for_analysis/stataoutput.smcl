@@ -1,9 +1,9 @@
 {smcl}
-{txt}{sf}{ul off}{.-}
+{com}{sf}{ul off}{txt}{.-}
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res}20 Sep 2020, 10:02:10
+ {txt}opened on:  {res}21 Sep 2020, 23:50:55
 {txt}
 {com}. 
 . * import csv file
@@ -11,6 +11,105 @@
 {res}{text}(7 vars, 5,076 obs)
 
 {com}. 
+. * create new dummy varables for quarters
+. gen q2 = 0
+{txt}
+{com}. gen q3 = 0
+{txt}
+{com}. gen q4 = 0
+{txt}
+{com}. 
+. replace q2 = 1 if quarter == 2
+{txt}(1,128 real changes made)
+
+{com}. replace q3 = 1 if quarter == 3
+{txt}(1,128 real changes made)
+
+{com}. replace q4 = 1 if quarter == 4
+{txt}(1,128 real changes made)
+
+{com}. 
+. * creater a new dummy variable for cashless-point refund project
+. gen project = 0
+{txt}
+{com}. replace project = 1 if quarter == 4 & year == 2019
+{txt}(564 real changes made)
+
+{com}. replace project = 1 if quarter == 1 & year == 2020
+{txt}(564 real changes made)
+
+{com}. 
+. * create a new variable for time index
+. gen time_id = 0
+{txt}
+{com}. replace time_id = 1 if quarter == 2 & year == 2018
+{txt}(564 real changes made)
+
+{com}. replace time_id = 2 if quarter == 3 & year == 2018
+{txt}(564 real changes made)
+
+{com}. replace time_id = 3 if quarter == 4 & year == 2018
+{txt}(564 real changes made)
+
+{com}. replace time_id = 4 if quarter == 1 & year == 2019
+{txt}(564 real changes made)
+
+{com}. replace time_id = 5 if quarter == 2 & year == 2019
+{txt}(564 real changes made)
+
+{com}. replace time_id = 6 if quarter == 3 & year == 2019
+{txt}(564 real changes made)
+
+{com}. replace time_id = 7 if quarter == 4 & year == 2019
+{txt}(564 real changes made)
+
+{com}. replace time_id = 8 if quarter == 1 & year == 2020
+{txt}(564 real changes made)
+
+{com}. 
+. * create a new variable for prefecture id
+. egen pref_id = group(pref)
+{txt}
+{com}. 
+. 
+. * extract group packege data
+. keep if item == "Food"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project, fe vce(cluster pref_id) 
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0300{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0084{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}1{txt},{res}46{txt}){col 67}={col 70}{res}    16.76
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0002
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1176.439{col 26}{space 2} 287.3221{col 37}{space 1}    4.09{col 46}{space 3}0.000{col 54}{space 4} 598.0898{col 67}{space 3} 1754.789
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 10686.76{col 26}{space 2} 63.84936{col 37}{space 1}  167.37{col 46}{space 3}0.000{col 54}{space 4} 10558.23{col 67}{space 3} 10815.28
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 4567.1464
+     {txt}sigma_e {c |} {res} 2954.6978
+         {txt}rho {c |} {res}  .7049505{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+. 
+. 
 {txt}end of do-file
 
 {com}. 

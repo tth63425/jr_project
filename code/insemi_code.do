@@ -50,7 +50,11 @@ egen pref_id = group(pref)
 
 * extract group packege data
 keep if item == "Food"
+
+* set the dataset as a panel data
 xtset pref_id time_id
+
+* regression analysis
 xtreg consumption project, fe vce(cluster pref_id) 
 
 

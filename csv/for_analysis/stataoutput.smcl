@@ -3,7 +3,7 @@
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res}22 Sep 2020, 00:13:53
+ {txt}opened on:  {res}22 Sep 2020, 12:35:02
 {txt}
 {com}. 
 . * import csv file
@@ -76,11 +76,11 @@
 . /*
 > save main
 > */
-. * ########################### CREATION OF THE MAIN DATASET ENDS ########################### *
+. * ########################### CREATION OF THE MAIN DATASET END ########################### *
 . 
 . 
 . 
-. * ########################### ANALYSIS STARTS ########################### *
+. * ########################### ANALYSIS 1 START ########################### *
 . 
 . * save the main dataset as main.dta
 . keep if item == "Group Package"
@@ -120,6 +120,10 @@
      {txt}sigma_e {c |} {res} 32152.886
          {txt}rho {c |} {res} .60138089{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table1.tex, replace
+{txt}{stata `"shellout using `"table1.tex"'"':table1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table1.txt""':seeout}
 
 {com}. 
 . 
@@ -163,6 +167,53 @@
          {txt}rho {c |} {res}  .2956809{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table1.tex, append
+{txt}{stata `"shellout using `"table1.tex"'"':table1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table1.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Rouund-trip Air / Ship"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0017{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0005{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}1{txt},{res}46{txt}){col 67}={col 70}{res}     0.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.5316
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-871.9826{col 26}{space 2} 1383.414{col 37}{space 1}   -0.63{col 46}{space 3}0.532{col 54}{space 4}-3656.651{col 67}{space 3} 1912.686
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 62080.64{col 26}{space 2} 307.4254{col 37}{space 1}  201.94{col 46}{space 3}0.000{col 54}{space 4} 61461.82{col 67}{space 3} 62699.45
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 14081.576
+     {txt}sigma_e {c |} {res} 9303.0655
+         {txt}rho {c |} {res} .69615331{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table1.tex, append
+{txt}{stata `"shellout using `"table1.tex"'"':table1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table1.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -201,6 +252,10 @@
      {txt}sigma_e {c |} {res} 5301.9913
          {txt}rho {c |} {res} .57302314{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table2.tex, replace
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
 
 {com}. 
 . clear all
@@ -241,6 +296,10 @@
          {txt}rho {c |} {res}  .7049505{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -279,6 +338,10 @@
      {txt}sigma_e {c |} {res} 1595.6615
          {txt}rho {c |} {res} .47329424{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
 
 {com}. 
 . clear all
@@ -319,6 +382,10 @@
          {txt}rho {c |} {res} .26908394{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -357,6 +424,10 @@
      {txt}sigma_e {c |} {res} 1179.0269
          {txt}rho {c |} {res} .26732319{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
 
 {com}. 
 . clear all
@@ -397,6 +468,10 @@
          {txt}rho {c |} {res} .15621367{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -435,6 +510,10 @@
      {txt}sigma_e {c |} {res} 6821.2222
          {txt}rho {c |} {res} .34248888{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
 
 {com}. 
 . clear all
@@ -475,6 +554,10 @@
          {txt}rho {c |} {res} .87281634{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -514,18 +597,20 @@
          {txt}rho {c |} {res} .26579698{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
-{com}. 
-. * ########################### ANALYSIS ENDS ########################### *
-. 
-{txt}end of do-file
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
-{txt}
-{com}. clear all
+{com}. * ########################### ANALYSIS 1 END ########################### *
+. 
+. 
+. 
+. * ########################### ANALYSIS 2 START ########################### *
+. clear all
 {res}{txt}
 {com}. use main
 {txt}
-{com}. keep if item == "Individual Package"
+{com}. keep if item == "Group Package"
 {txt}(4,653 observations deleted)
 
 {com}. xtset pref_id time_id
@@ -539,34 +624,33 @@
 {txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
 
 {txt}R-sq:{col 49}Obs per group:
-     within  = {res}0.0895{col 63}{txt}min{col 67}={col 69}{res}         9
+     within  = {res}0.1559{col 63}{txt}min{col 67}={col 69}{res}         9
 {txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
-{txt}     overall = {res}0.0612{col 63}{txt}max{col 67}={col 69}{res}         9
+{txt}     overall = {res}0.0588{col 63}{txt}max{col 67}={col 69}{res}         9
 
-{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     9.60
-{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     7.32
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0001
 
 {txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
 {hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
 {col 14}{c |}{col 26}    Robust
 {col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
 {hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{space 5}project {c |}{col 14}{res}{space 2} 10246.66{col 26}{space 2}  11457.7{col 37}{space 1}    0.89{col 46}{space 3}0.376{col 54}{space 4} -12816.5{col 67}{space 3} 33309.82
-{txt}{space 10}q2 {c |}{col 14}{res}{space 2}  59834.1{col 26}{space 2} 12154.91{col 37}{space 1}    4.92{col 46}{space 3}0.000{col 54}{space 4} 35367.53{col 67}{space 3} 84300.67
-{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24285.15{col 26}{space 2} 9879.488{col 37}{space 1}    2.46{col 46}{space 3}0.018{col 54}{space 4} 4398.767{col 67}{space 3} 44171.52
-{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 56204.74{col 26}{space 2} 12606.67{col 37}{space 1}    4.46{col 46}{space 3}0.000{col 54}{space 4} 30828.83{col 67}{space 3} 81580.64
-{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 152535.5{col 26}{space 2} 5620.607{col 37}{space 1}   27.14{col 46}{space 3}0.000{col 54}{space 4} 141221.8{col 67}{space 3} 163849.1
+{space 5}project {c |}{col 14}{res}{space 2} 8152.879{col 26}{space 2} 4439.335{col 37}{space 1}    1.84{col 46}{space 3}0.073{col 54}{space 4}-783.0379{col 67}{space 3}  17088.8
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 27345.94{col 26}{space 2}  5165.38{col 37}{space 1}    5.29{col 46}{space 3}0.000{col 54}{space 4} 16948.57{col 67}{space 3} 37743.31
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 9496.844{col 26}{space 2} 3046.968{col 37}{space 1}    3.12{col 46}{space 3}0.003{col 54}{space 4} 3363.616{col 67}{space 3} 15630.07
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 25143.82{col 26}{space 2} 5299.412{col 37}{space 1}    4.74{col 46}{space 3}0.000{col 54}{space 4} 14476.66{col 67}{space 3} 35810.99
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 127999.9{col 26}{space 2} 2988.101{col 37}{space 1}   42.84{col 46}{space 3}0.000{col 54}{space 4} 121985.1{col 67}{space 3} 134014.6
 {txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-     sigma_u {c |} {res} 59067.314
-     {txt}sigma_e {c |} {res} 87376.454
-         {txt}rho {c |} {res} .31365296{txt}   (fraction of variance due to u_i)
+     sigma_u {c |} {res} 39492.599
+     {txt}sigma_e {c |} {res} 29780.383
+         {txt}rho {c |} {res} .63749931{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
-{com}. 
-{txt}end of do-file
+{com}. outreg2 using table3.tex, replace
+{txt}{stata `"shellout using `"table3.tex"'"':table3.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table3.txt""':seeout}
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
-{txt}
 {com}. 
 . clear all
 {res}{txt}
@@ -608,6 +692,56 @@
      {txt}sigma_e {c |} {res} 87376.454
          {txt}rho {c |} {res} .31365296{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Rouund-trip Air / Ship"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1207{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0343{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}    15.32
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 2243.203{col 26}{space 2}  1257.99{col 37}{space 1}    1.78{col 46}{space 3}0.081{col 54}{space 4}-289.0004{col 67}{space 3} 4775.406
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 4248.743{col 26}{space 2} 1229.617{col 37}{space 1}    3.46{col 46}{space 3}0.001{col 54}{space 4} 1773.652{col 67}{space 3} 6723.833
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 8648.313{col 26}{space 2} 1283.574{col 37}{space 1}    6.74{col 46}{space 3}0.000{col 54}{space 4} 6064.613{col 67}{space 3} 11232.01
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 1595.127{col 26}{space 2} 1343.066{col 37}{space 1}    1.19{col 46}{space 3}0.241{col 54}{space 4}-1108.326{col 67}{space 3} 4298.579
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 58167.89{col 26}{space 2} 827.9263{col 37}{space 1}   70.26{col 46}{space 3}0.000{col 54}{space 4} 56501.36{col 67}{space 3} 59834.42
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 14081.576
+     {txt}sigma_e {c |} {res} 8765.9483
+         {txt}rho {c |} {res}  .7207098{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table2.tex, append
+{txt}{stata `"shellout using `"table2.tex"'"':table2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table2.txt""':seeout}
 
 {com}. 
 . clear all
@@ -651,6 +785,10 @@
          {txt}rho {c |} {res} .59317042{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table4.tex, replace
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -692,6 +830,10 @@
      {txt}sigma_e {c |} {res} 2772.5313
          {txt}rho {c |} {res}  .7307155{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
 
 {com}. 
 . clear all
@@ -735,6 +877,10 @@
          {txt}rho {c |} {res} .47800964{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -776,6 +922,10 @@
      {txt}sigma_e {c |} {res} 1791.0181
          {txt}rho {c |} {res} .27104473{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
 
 {com}. 
 . clear all
@@ -819,6 +969,10 @@
          {txt}rho {c |} {res} .26948115{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -860,6 +1014,10 @@
      {txt}sigma_e {c |} {res} 7648.6344
          {txt}rho {c |} {res} .16061665{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
 
 {com}. 
 . clear all
@@ -903,6 +1061,10 @@
          {txt}rho {c |} {res} .35207981{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
+
 {com}. 
 . clear all
 {res}{txt}
@@ -944,6 +1106,10 @@
      {txt}sigma_e {c |} {res} 3614.4569
          {txt}rho {c |} {res} .87814349{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
 
 {com}. 
 . clear all
@@ -987,99 +1153,12 @@
          {txt}rho {c |} {res} .26687906{txt}   (fraction of variance due to u_i)
 {hline 13}{c BT}{hline 64}
 
-{com}. 
-{txt}end of do-file
+{com}. outreg2 using table4.tex, append
+{txt}{stata `"shellout using `"table4.tex"'"':table4.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table4.txt""':seeout}
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
-{txt}
-{com}. clear all
-{res}{txt}
-{com}. use main
-{txt}
-{com}. keep if item == "Group Package"
-{txt}(4,653 observations deleted)
-
-{com}. xtset pref_id time_id
-{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
-{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
-{txt}{col 17}delta:  {res}1 unit
-{txt}
-{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
-{res}
-{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
-{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
-
-{txt}R-sq:{col 49}Obs per group:
-     within  = {res}0.1559{col 63}{txt}min{col 67}={col 69}{res}         9
-{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
-{txt}     overall = {res}0.0588{col 63}{txt}max{col 67}={col 69}{res}         9
-
-{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     7.32
-{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0001
-
-{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
-{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{col 14}{c |}{col 26}    Robust
-{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
-{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{space 5}project {c |}{col 14}{res}{space 2} 8152.879{col 26}{space 2} 4439.335{col 37}{space 1}    1.84{col 46}{space 3}0.073{col 54}{space 4}-783.0379{col 67}{space 3}  17088.8
-{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 27345.94{col 26}{space 2}  5165.38{col 37}{space 1}    5.29{col 46}{space 3}0.000{col 54}{space 4} 16948.57{col 67}{space 3} 37743.31
-{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 9496.844{col 26}{space 2} 3046.968{col 37}{space 1}    3.12{col 46}{space 3}0.003{col 54}{space 4} 3363.616{col 67}{space 3} 15630.07
-{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 25143.82{col 26}{space 2} 5299.412{col 37}{space 1}    4.74{col 46}{space 3}0.000{col 54}{space 4} 14476.66{col 67}{space 3} 35810.99
-{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 127999.9{col 26}{space 2} 2988.101{col 37}{space 1}   42.84{col 46}{space 3}0.000{col 54}{space 4} 121985.1{col 67}{space 3} 134014.6
-{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-     sigma_u {c |} {res} 39492.599
-     {txt}sigma_e {c |} {res} 29780.383
-         {txt}rho {c |} {res} .63749931{txt}   (fraction of variance due to u_i)
-{hline 13}{c BT}{hline 64}
-
-{com}. 
-{txt}end of do-file
-
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD02878.000000"
-{txt}
-{com}. clear all
-{res}{txt}
-{com}. use main
-{txt}
-{com}. keep if item == "Food"
-{txt}(4,653 observations deleted)
-
-{com}. xtset pref_id time_id
-{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
-{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
-{txt}{col 17}delta:  {res}1 unit
-{txt}
-{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
-{res}
-{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
-{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
-
-{txt}R-sq:{col 49}Obs per group:
-     within  = {res}0.1527{col 63}{txt}min{col 67}={col 69}{res}         9
-{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
-{txt}     overall = {res}0.0429{col 63}{txt}max{col 67}={col 69}{res}         9
-
-{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}    11.88
-{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
-
-{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
-{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{col 14}{c |}{col 26}    Robust
-{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
-{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-{space 5}project {c |}{col 14}{res}{space 2} 1090.627{col 26}{space 2}  336.433{col 37}{space 1}    3.24{col 46}{space 3}0.002{col 54}{space 4} 413.4223{col 67}{space 3} 1767.831
-{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-2037.942{col 26}{space 2}  495.085{col 37}{space 1}   -4.12{col 46}{space 3}0.000{col 54}{space 4}-3034.496{col 67}{space 3}-1041.388
-{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-1330.524{col 26}{space 2} 529.8568{col 37}{space 1}   -2.51{col 46}{space 3}0.016{col 54}{space 4} -2397.07{col 67}{space 3}-263.9776
-{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-2454.498{col 26}{space 2} 457.1956{col 37}{space 1}   -5.37{col 46}{space 3}0.000{col 54}{space 4}-3374.785{col 67}{space 3}-1534.211
-{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 11999.82{col 26}{space 2} 333.7034{col 37}{space 1}   35.96{col 46}{space 3}0.000{col 54}{space 4} 11328.11{col 67}{space 3} 12671.53
-{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
-     sigma_u {c |} {res} 4567.1464
-     {txt}sigma_e {c |} {res} 2772.5313
-         {txt}rho {c |} {res}  .7307155{txt}   (fraction of variance due to u_i)
-{hline 13}{c BT}{hline 64}
-
-{com}. 
+{com}. * ########################### ANALYSIS 2 END ########################### *
+. 
 {txt}end of do-file
 
 {com}. 

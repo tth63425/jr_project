@@ -60,6 +60,8 @@ save main
 
 
 * ########################### ANALYSIS 1 START ########################### *
+clear all 
+use main
 
 * save the main dataset as main.dta
 keep if item == "Group Package"
@@ -69,7 +71,7 @@ xtset pref_id time_id
 
 * regression analysis
 xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table1.tex, replace
+* outreg2 using table1.tex, replace
 
 
 * clear all data in memory

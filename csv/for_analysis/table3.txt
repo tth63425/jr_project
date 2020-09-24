@@ -1,0 +1,19 @@
+	(1)
+VARIABLES	consumption
+	
+project	8,153*
+	(4,439)
+q2	27,346***
+	(5,165)
+q3	9,497***
+	(3,047)
+q4	25,144***
+	(5,299)
+Constant	128,000***
+	(2,988)
+	
+Observations	423
+Number of pref_id	47
+R-squared	0.156
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

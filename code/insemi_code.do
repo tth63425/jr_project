@@ -58,8 +58,111 @@ save main
 * ########################### CREATION OF THE MAIN DATASET END ########################### *
 
 
+/*
+ANALYSIS 1: without quarter dummy, until 2019 4Q (table 1 & 2)
+ANALYSIS 2: without quarter dummy, until 2020 1Q (table 3 & 4)
+ANALYSIS 3: with quarter dummy, until 2019 4Q (table 5 & 6)
+ANALYSIS 4: with quarter dummy, until 2020 1Q (table 7 & 8)
+*/
+
 
 * ########################### ANALYSIS 1 START ########################### *
+clear all 
+use main
+
+* save the main dataset as main.dta
+keep if item == "Group Package" & year != 2020
+
+* set the dataset as a panel data
+xtset pref_id time_id
+
+* regression analysis
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table1.tex, replace
+
+
+* clear all data in memory
+clear all
+* load main dataset
+use main
+keep if item == "Individual Package" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table1.tex, append
+
+clear all
+use main
+keep if item == "Rouund-trip Air / Ship" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table1.tex, append
+
+clear all
+use main
+keep if item == "Accommodation" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, replace
+
+clear all
+use main
+keep if item == "Food" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Overall" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Train" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Others" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Leisure" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Shopping" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+
+clear all
+use main
+keep if item == "Others" & year != 2020
+xtset pref_id time_id
+xtreg consumption project, fe vce(cluster pref_id)
+outreg2 using table2.tex, append
+* ########################### ANALYSIS 1 END ########################### *
+
+
+* ########################### ANALYSIS 2 START ########################### *
 clear all 
 use main
 
@@ -71,7 +174,7 @@ xtset pref_id time_id
 
 * regression analysis
 xtreg consumption project, fe vce(cluster pref_id)
-* outreg2 using table1.tex, replace
+outreg2 using table3.tex, replace
 
 
 * clear all data in memory
@@ -81,163 +184,249 @@ use main
 keep if item == "Individual Package"
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table1.tex, append
+outreg2 using table3.tex, append
 
 clear all
 use main
 keep if item == "Rouund-trip Air / Ship"
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table1.tex, append
+outreg2 using table3.tex, append
 
 clear all
 use main
 keep if item == "Accommodation"
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, replace
-
-clear all
-use main
-keep if item == "Food"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Overall"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Train"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Bus/Taxi"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Others"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Leisure"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Shopping"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Others"
-xtset pref_id time_id
-xtreg consumption project, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-* ########################### ANALYSIS 1 END ########################### *
-
-
-
-* ########################### ANALYSIS 2 START ########################### *
-clear all
-use main
-keep if item == "Group Package"
-xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
-outreg2 using table3.tex, replace
-
-clear all
-use main
-keep if item == "Individual Package"
-xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Rouund-trip Air / Ship"
-xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
-outreg2 using table2.tex, append
-
-clear all
-use main
-keep if item == "Accommodation"
-xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
 outreg2 using table4.tex, replace
 
 clear all
 use main
 keep if item == "Food"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Transportation - Overall"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Transportation - Train"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Transportation - Bus/Taxi"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Transportation - Others"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Leisure"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Shopping"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 
 clear all
 use main
 keep if item == "Others"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table4.tex, append
 * ########################### ANALYSIS 2 END ########################### *
+
+* ########################### ANALYSIS 3 START ########################### *
+clear all
+use main
+keep if item == "Group Package" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table5.tex, replace
+
+clear all
+use main
+keep if item == "Individual Package" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table5.tex, append
+
+clear all
+use main
+keep if item == "Rouund-trip Air / Ship" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table5.tex, append
+
+clear all
+use main
+keep if item == "Accommodation" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, replace
+
+clear all
+use main
+keep if item == "Food" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Overall" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Train" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Others" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Leisure" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Shopping" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+
+clear all
+use main
+keep if item == "Others" & year != 2020
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table6.tex, append
+* ########################### ANALYSIS 3 END ########################### *
+
+* ########################### ANALYSIS 4 START ########################### *
+clear all
+use main
+keep if item == "Group Package"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table7.tex, replace
+
+clear all
+use main
+keep if item == "Individual Package"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table7.tex, append
+
+clear all
+use main
+keep if item == "Rouund-trip Air / Ship"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table7.tex, append
+
+clear all
+use main
+keep if item == "Accommodation"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, replace
+
+clear all
+use main
+keep if item == "Food"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Overall"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Train"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Others"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Leisure"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Shopping"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Others"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+* ########################### ANALYSIS 4 END ########################### *
+
+

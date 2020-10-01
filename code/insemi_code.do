@@ -69,6 +69,7 @@ ANALYSIS 4: with quarter dummy, until 2020 1Q (table 7 & 8)
 * ########################### ANALYSIS 1 START ########################### *
 clear all 
 use main
+outreg2 using stat0.tex, replace sum(log)
 
 * save the main dataset as main.dta
 keep if item == "Group Package" & year != 2020
@@ -80,12 +81,15 @@ xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table1.tex, replace
 
+outreg2 using stat1.tex, replace sum(log)
+
 
 * clear all data in memory
 clear all
 * load main dataset
 use main
 keep if item == "Individual Package" & year != 2020
+outreg2 using stat2.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table1.tex, append
@@ -93,6 +97,7 @@ outreg2 using table1.tex, append
 clear all
 use main
 keep if item == "Rouund-trip Air / Ship" & year != 2020
+outreg2 using stat3.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table1.tex, append
@@ -100,6 +105,7 @@ outreg2 using table1.tex, append
 clear all
 use main
 keep if item == "Accommodation" & year != 2020
+outreg2 using stat4.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, replace
@@ -107,6 +113,7 @@ outreg2 using table2.tex, replace
 clear all
 use main
 keep if item == "Food" & year != 2020
+outreg2 using stat5.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -114,6 +121,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Transportation - Overall" & year != 2020
+outreg2 using stat6.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -121,6 +129,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Transportation - Train" & year != 2020
+outreg2 using stat7.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -128,6 +137,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Transportation - Bus/Taxi" & year != 2020
+outreg2 using stat8.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -135,6 +145,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Transportation - Others" & year != 2020
+outreg2 using stat9.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -142,6 +153,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Leisure" & year != 2020
+outreg2 using stat10.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -149,6 +161,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Shopping" & year != 2020
+outreg2 using stat11.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -156,6 +169,7 @@ outreg2 using table2.tex, append
 clear all
 use main
 keep if item == "Others" & year != 2020
+outreg2 using stat12.tex, replace sum(log)
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table2.tex, append
@@ -428,5 +442,15 @@ xtset pref_id time_id
 xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
 outreg2 using table8.tex, append
 * ########################### ANALYSIS 4 END ########################### *
+
+
+
+
+
+
+
+
+
+
 
 

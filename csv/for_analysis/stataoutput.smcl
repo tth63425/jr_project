@@ -3,7 +3,7 @@
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res} 1 Oct 2020, 16:46:04
+ {txt}opened on:  {res} 3 Oct 2020, 20:50:17
 {txt}
 {com}. 
 . * import csv file
@@ -92,30 +92,7 @@
 {res}{txt}
 {com}. use main
 {txt}
-{com}. outreg2 using stat0.tex, replace sum(log)
-
-{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
-{hline 13}{c +}{hline 57}
-{space 10}v1 {c |}{res}      5,076      2537.5    1465.459          0       5075
-{txt}{space 8}year {c |}{res}      5,076    2018.667    .6667323       2018       2020
-{txt}{space 5}quarter {c |}{res}      5,076    2.333333    1.154814          1          4
-{txt}{space 5}answers {c |}{res}      5,076    259.9007    703.0267          0       7595
-{txt}{space 1}consumption {c |}{res}      5,076    38615.62     68296.1          0   632303.8
-{txt}{hline 13}{c +}{hline 57}
-{space 10}q2 {c |}{res}      5,076    .2222222    .4157807          0          1
-{txt}{space 10}q3 {c |}{res}      5,076    .2222222    .4157807          0          1
-{txt}{space 10}q4 {c |}{res}      5,076    .2222222    .4157807          0          1
-{txt}{space 5}project {c |}{res}      5,076    .2222222    .4157807          0          1
-{txt}{space 5}time_id {c |}{res}      5,076           4    2.582243          0          8
-{txt}{hline 13}{c +}{hline 57}
-{space 5}pref_id {c |}{res}      5,076          24      13.566          1         47
-
-Following variable is string, not included:  
-pref  item  
-{txt}{stata `"shellout using `"stat0.tex"'"':stat0.tex}
-{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "stat0.txt""':seeout}
-
 {com}. 
 {txt}end of do-file
 
-{com}. exit
+{com}. 

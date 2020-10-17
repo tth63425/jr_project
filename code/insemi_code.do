@@ -63,11 +63,12 @@ save main
 
 
 /*
-ANALYSIS 1: without quarter dummy, until 2019 4Q (table 1 & 2)
-ANALYSIS 2: without quarter dummy, until 2020 1Q (table 3 & 4)
-ANALYSIS 3: with quarter dummy, until 2019 4Q (table 5 & 6)
-ANALYSIS 4: with quarter dummy, until 2020 1Q (table 7 & 8)
-ANALYSIS 5: 
+ANALYSIS 1: foreign, without quarter dummy, until 2019 4Q (table 1 & 2)
+ANALYSIS 2: foreign, without quarter dummy, until 2020 1Q (table 3 & 4)
+ANALYSIS 3: foreign, with quarter dummy, until 2019 4Q (table 5 & 6)
+ANALYSIS 4: foreign, with quarter dummy, until 2020 1Q (table 7 & 8)
+ANALYSIS 5: domestic, cpc_stay_tourism, with quarter dummy, until 20201Q
+ANALYSIS 6: domestic, cpc_day_tourism, with quarter dummy, until 20201Q
 */
 
 
@@ -455,90 +456,71 @@ outreg2 using table8.tex, append
 * ########################### ANALYSIS 4 END ########################### *
 
 
-egen item_id = group(item)
-
+/*
 clear all
-use main
-egen item_id = group(item)
-reghdfe consumption project q2 q3 q4, absorb(pref_id item_id)
+use main_domestic
+
+* create a new variable for prefecture id
+egen pref_id = group(pref)
+
+* create a new variable for time index
+gen time_id = 0
+replace time_id = 1 if quarter == 2 & year == 2018
+replace time_id = 2 if quarter == 3 & year == 2018
+replace time_id = 3 if quarter == 4 & year == 2018
+replace time_id = 4 if quarter == 1 & year == 2019
+replace time_id = 5 if quarter == 2 & year == 2019
+replace time_id = 6 if quarter == 3 & year == 2019
+replace time_id = 7 if quarter == 4 & year == 2019
+replace time_id = 8 if quarter == 1 & year == 2020
+
+save main_domestic
+
+*/
+
+/*
+* create new dummy varables for quarters
+gen q2 = 0
+gen q3 = 0
+gen q4 = 0
+
+replace q2 = 1 if quarter == 2
+replace q3 = 1 if quarter == 3
+replace q4 = 1 if quarter == 4
+
+save main_domestic
+*/
+
+/*
+* creater a new dummy variable for cashless-point refund project
+gen project = 0
+replace project = 1 if quarter == 4 & year == 2019
+replace project = 1 if quarter == 1 & year == 2020
 
 
+save main_domestic
+*/
+
+
+* ########################### ANALYSIS 5 START ########################### *
+* 単位を変える必要がある？全くもって有意にならない。
 clear all
-use main
-keep if item == "Group Package"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table9.tex, replace
+use main_domestic
+xtset pref_id time_id
+xtreg cpc_stay_tourism project q2 q3 q4, fe vce(cluster pref_id)
+xtreg cpc_day_tourism project q2 q3 q4, fe vce(cluster pref_id)
 
-clear all
-use main
-keep if item == "Individual Package"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table9.tex, append
+drop if year == 2020
 
-clear all
-use main
-keep if item == "Rouund-trip Air / Ship"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table9.tex, append
-
-clear all
-use main
-keep if item == "Accommodation"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, replace
-
-clear all
-use main
-keep if item == "Food"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Overall"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Train"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Bus/Taxi"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Transportation - Others"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Leisure"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Shopping"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
-
-clear all
-use main
-keep if item == "Others"
-areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
-outreg2 using table10.tex, append
+xtset pref_id time_id
+xtreg cpc_stay_tourism project q2 q3 q4, fe vce(cluster pref_id)
+xtreg cpc_day_tourism project q2 q3 q4, fe vce(cluster pref_id)
 
 
 
 
 
 
-clear all
-use main2
+
+
+

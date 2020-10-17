@@ -15,4 +15,302 @@
 {com}. 
 {txt}end of do-file
 
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. use main_domestic
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main_domestic
+{txt}
+{com}. 
+. * create a new variable for prefecture id
+. egen pref_id = group(pref)
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. * create a new variable for time index
+. gen time_id = 0
+{txt}
+{com}. replace time_id = 1 if quarter == 2 & year == 2018
+{txt}(47 real changes made)
+
+{com}. replace time_id = 2 if quarter == 3 & year == 2018
+{txt}(47 real changes made)
+
+{com}. replace time_id = 3 if quarter == 4 & year == 2018
+{txt}(47 real changes made)
+
+{com}. replace time_id = 4 if quarter == 1 & year == 2019
+{txt}(47 real changes made)
+
+{com}. replace time_id = 5 if quarter == 2 & year == 2019
+{txt}(47 real changes made)
+
+{com}. replace time_id = 6 if quarter == 3 & year == 2019
+{txt}(47 real changes made)
+
+{com}. replace time_id = 7 if quarter == 4 & year == 2019
+{txt}(47 real changes made)
+
+{com}. replace time_id = 8 if quarter == 1 & year == 2020
+{txt}(47 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. save main_domestic
+{err}{p 0 4 2}
+file main_domestic.dta
+already exists
+{p_end}
+{txt}{search r(602), local:r(602);}
+
+end of do-file
+
+{search r(602), local:r(602);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. * create new dummy varables for quarters
+. gen q2 = 0
+{txt}
+{com}. gen q3 = 0
+{txt}
+{com}. gen q4 = 0
+{txt}
+{com}. 
+. replace q2 = 1 if quarter == 2
+{txt}(94 real changes made)
+
+{com}. replace q3 = 1 if quarter == 3
+{txt}(94 real changes made)
+
+{com}. replace q4 = 1 if quarter == 4
+{txt}(94 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. save main_domestic
+{err}{p 0 4 2}
+file main_domestic.dta
+already exists
+{p_end}
+{txt}{search r(602), local:r(602);}
+
+end of do-file
+
+{search r(602), local:r(602);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. * creater a new dummy variable for cashless-point refund project
+. gen project = 0
+{txt}
+{com}. replace project = 1 if quarter == 4 & year == 2019
+{txt}(47 real changes made)
+
+{com}. replace project = 1 if quarter == 1 & year == 2020
+{txt}(47 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. save main_domestic
+{err}{p 0 4 2}
+file main_domestic.dta
+already exists
+{p_end}
+{txt}{search r(602), local:r(602);}
+
+end of do-file
+
+{search r(602), local:r(602);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. save main_domestic
+{txt}file main_domestic.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main_domestic
+{txt}
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg cpc_stay_tourism project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0314{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0129{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     2.33
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0701
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}cpc_stay_t~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} .0301474{col 26}{space 2} 1.452882{col 37}{space 1}    0.02{col 46}{space 3}0.984{col 54}{space 4}-2.894353{col 67}{space 3} 2.954648
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 1.626201{col 26}{space 2} 1.866173{col 37}{space 1}    0.87{col 46}{space 3}0.388{col 54}{space 4}-2.130212{col 67}{space 3} 5.382613
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 5.345277{col 26}{space 2} 2.052943{col 37}{space 1}    2.60{col 46}{space 3}0.012{col 54}{space 4} 1.212918{col 67}{space 3} 9.477636
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 2.422376{col 26}{space 2} 1.473845{col 37}{space 1}    1.64{col 46}{space 3}0.107{col 54}{space 4}-.5443198{col 67}{space 3} 5.389072
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   58.288{col 26}{space 2} 1.156374{col 37}{space 1}   50.41{col 46}{space 3}0.000{col 54}{space 4} 55.96034{col 67}{space 3} 60.61566
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 13.469068
+     {txt}sigma_e {c |} {res} 11.662149
+         {txt}rho {c |} {res} .57152961{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. xtreg cpc_day_tourism project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0133{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0111{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     1.76
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.1522
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}cpc_day_to~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-.1461572{col 26}{space 2} .8182298{col 37}{space 1}   -0.18{col 46}{space 3}0.859{col 54}{space 4}-1.793168{col 67}{space 3} 1.500854
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-.5130714{col 26}{space 2} .5873147{col 37}{space 1}   -0.87{col 46}{space 3}0.387{col 54}{space 4}-1.695275{col 67}{space 3} .6691318
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} .9738964{col 26}{space 2} .8551011{col 37}{space 1}    1.14{col 46}{space 3}0.261{col 54}{space 4}-.7473328{col 67}{space 3} 2.695126
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} .8568272{col 26}{space 2} .7611564{col 37}{space 1}    1.13{col 46}{space 3}0.266{col 54}{space 4}-.6753012{col 67}{space 3} 2.388955
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 16.54545{col 26}{space 2} .3564381{col 37}{space 1}   46.42{col 46}{space 3}0.000{col 54}{space 4} 15.82797{col 67}{space 3} 17.26292
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  2.277433
+     {txt}sigma_e {c |} {res} 5.3631959
+         {txt}rho {c |} {res} .15277213{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. drop if year = 2019
+{err}=exp not allowed
+{txt}{search r(101), local:r(101);}
+
+end of do-file
+
+{search r(101), local:r(101);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. drop if year == 2020
+{txt}(47 observations deleted)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{txt}
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 7
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg cpc_stay_tourism project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       376
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0326{col 63}{txt}min{col 67}={col 69}{res}         8
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       8.0
+{txt}     overall = {res}0.0124{col 63}{txt}max{col 67}={col 69}{res}         8
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     1.99
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.1112
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}cpc_stay_t~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} .4901132{col 26}{space 2} 1.956486{col 37}{space 1}    0.25{col 46}{space 3}0.803{col 54}{space 4}-3.448089{col 67}{space 3} 4.428315
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 1.511209{col 26}{space 2} 2.046456{col 37}{space 1}    0.74{col 46}{space 3}0.464{col 54}{space 4}-2.608092{col 67}{space 3} 5.630511
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 5.230285{col 26}{space 2} 2.208108{col 37}{space 1}    2.37{col 46}{space 3}0.022{col 54}{space 4} .7855954{col 67}{space 3} 9.674975
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 2.077402{col 26}{space 2}  2.49587{col 37}{space 1}    0.83{col 46}{space 3}0.410{col 54}{space 4}-2.946523{col 67}{space 3} 7.101327
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   58.403{col 26}{space 2} 1.405352{col 37}{space 1}   41.56{col 46}{space 3}0.000{col 54}{space 4} 55.57417{col 67}{space 3} 61.23182
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 13.610113
+     {txt}sigma_e {c |} {res}  11.18381
+         {txt}rho {c |} {res} .59693057{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. xtreg cpc_day_tourism project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       376
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0230{col 63}{txt}min{col 67}={col 69}{res}         8
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       8.0
+{txt}     overall = {res}0.0191{col 63}{txt}max{col 67}={col 69}{res}         8
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     1.71
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.1634
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}cpc_day_to~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-1.441272{col 26}{space 2} 1.241788{col 37}{space 1}   -1.16{col 46}{space 3}0.252{col 54}{space 4}-3.940862{col 67}{space 3} 1.058318
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-.1892927{col 26}{space 2} .6435229{col 37}{space 1}   -0.29{col 46}{space 3}0.770{col 54}{space 4}-1.484637{col 67}{space 3} 1.106052
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 1.297675{col 26}{space 2} .8326625{col 37}{space 1}    1.56{col 46}{space 3}0.126{col 54}{space 4}-.3783875{col 67}{space 3} 2.973738
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 1.828163{col 26}{space 2} 1.257153{col 37}{space 1}    1.45{col 46}{space 3}0.153{col 54}{space 4}-.7023538{col 67}{space 3}  4.35868
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 16.22167{col 26}{space 2}  .417945{col 37}{space 1}   38.81{col 46}{space 3}0.000{col 54}{space 4} 15.38039{col 67}{space 3} 17.06295
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 2.2508984
+     {txt}sigma_e {c |} {res} 5.2382335
+         {txt}rho {c |} {res} .15586663{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. 
+{txt}end of do-file
+
 {com}. 

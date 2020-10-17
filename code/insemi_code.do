@@ -7,6 +7,7 @@ DO-FILE FOR OKAMURO SEMINAR JUNIOR PROJECT
 
 * ########################### CREATION OF THE MAIN DATASET BEGIN ########################### *
 
+* preamble
 * delate all stored data
 clear all
 
@@ -19,6 +20,7 @@ cd "/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/c
 * create a new log file
 log using stataoutput, replace
 
+/*
 * import csv file
 import delimited foreign_raw.csv
 
@@ -55,6 +57,8 @@ egen pref_id = group(pref)
 /*
 save main
 */
+
+*/
 * ########################### CREATION OF THE MAIN DATASET END ########################### *
 
 
@@ -63,6 +67,7 @@ ANALYSIS 1: without quarter dummy, until 2019 4Q (table 1 & 2)
 ANALYSIS 2: without quarter dummy, until 2020 1Q (table 3 & 4)
 ANALYSIS 3: with quarter dummy, until 2019 4Q (table 5 & 6)
 ANALYSIS 4: with quarter dummy, until 2020 1Q (table 7 & 8)
+ANALYSIS 5: 
 */
 
 
@@ -199,6 +204,12 @@ keep if item == "Individual Package"
 xtset pref_id time_id
 xtreg consumption project, fe vce(cluster pref_id)
 outreg2 using table3.tex, append
+
+clear all
+use main
+keep if item == "Individual Package"
+reghdfe consumption project, absorb(pref_id)
+
 
 clear all
 use main
@@ -362,7 +373,7 @@ clear all
 use main
 keep if item == "Group Package"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+xtreg consumption project q2 q3 q4 i.time_id, fe vce(cluster pref_id)
 outreg2 using table7.tex, replace
 
 clear all
@@ -444,13 +455,90 @@ outreg2 using table8.tex, append
 * ########################### ANALYSIS 4 END ########################### *
 
 
+egen item_id = group(item)
+
+clear all
+use main
+egen item_id = group(item)
+reghdfe consumption project q2 q3 q4, absorb(pref_id item_id)
+
+
+clear all
+use main
+keep if item == "Group Package"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table9.tex, replace
+
+clear all
+use main
+keep if item == "Individual Package"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table9.tex, append
+
+clear all
+use main
+keep if item == "Rouund-trip Air / Ship"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table9.tex, append
+
+clear all
+use main
+keep if item == "Accommodation"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, replace
+
+clear all
+use main
+keep if item == "Food"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Overall"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Train"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Others"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Leisure"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Shopping"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
+
+clear all
+use main
+keep if item == "Others"
+areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+outreg2 using table10.tex, append
 
 
 
 
 
 
-
-
-
-
+clear all
+use main2

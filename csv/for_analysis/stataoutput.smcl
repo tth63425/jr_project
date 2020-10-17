@@ -3,7 +3,7 @@
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res} 4 Oct 2020, 00:34:09
+ {txt}opened on:  {res} 9 Oct 2020, 19:55:37
 {txt}
 {com}. 
 . /*
@@ -53,6 +53,7 @@
 > ANALYSIS 2: without quarter dummy, until 2020 1Q (table 3 & 4)
 > ANALYSIS 3: with quarter dummy, until 2019 4Q (table 5 & 6)
 > ANALYSIS 4: with quarter dummy, until 2020 1Q (table 7 & 8)
+> ANALYSIS 5: 
 > */
 . 
 . 
@@ -64,27 +65,1684 @@
 {com}. 
 {txt}end of do-file
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD04193.000000"
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
 {txt}
-{com}. clear all 
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1559{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0588{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}46{txt}){col 67}={col 70}{res}     7.32
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0001
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 8152.879{col 26}{space 2} 4439.335{col 37}{space 1}    1.84{col 46}{space 3}0.073{col 54}{space 4}-783.0379{col 67}{space 3}  17088.8
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 27345.94{col 26}{space 2}  5165.38{col 37}{space 1}    5.29{col 46}{space 3}0.000{col 54}{space 4} 16948.57{col 67}{space 3} 37743.31
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 9496.844{col 26}{space 2} 3046.968{col 37}{space 1}    3.12{col 46}{space 3}0.003{col 54}{space 4} 3363.616{col 67}{space 3} 15630.07
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 25143.82{col 26}{space 2} 5299.412{col 37}{space 1}    4.74{col 46}{space 3}0.000{col 54}{space 4} 14476.66{col 67}{space 3} 35810.99
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 127999.9{col 26}{space 2} 2988.101{col 37}{space 1}   42.84{col 46}{space 3}0.000{col 54}{space 4} 121985.1{col 67}{space 3} 134014.6
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 39492.599
+     {txt}sigma_e {c |} {res} 29780.383
+         {txt}rho {c |} {res} .63749931{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table9.tex, replace
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4, absorb(pref_id) vce(cluster pref_id)
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   4{txt},{res}     46{txt}){col 67}= {res}      6.51
+{txt}{col 49}Prob > F{col 67}= {res}    0.0003
+{txt}{col 49}R-squared{col 67}= {res}    0.6817
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.6389
+{txt}{col 49}Root MSE{col 67}= {res}29780.3829
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 8152.879{col 26}{space 2} 4705.812{col 37}{space 1}    1.73{col 46}{space 3}0.090{col 54}{space 4}-1319.429{col 67}{space 3} 17625.19
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 27345.94{col 26}{space 2} 5475.439{col 37}{space 1}    4.99{col 46}{space 3}0.000{col 54}{space 4} 16324.45{col 67}{space 3} 38367.43
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 9496.844{col 26}{space 2} 3229.866{col 37}{space 1}    2.94{col 46}{space 3}0.005{col 54}{space 4}  2995.46{col 67}{space 3} 15998.23
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 25143.82{col 26}{space 2} 5617.516{col 37}{space 1}    4.48{col 46}{space 3}0.000{col 54}{space 4} 13836.35{col 67}{space 3}  36451.3
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 127999.9{col 26}{space 2} 3167.466{col 37}{space 1}   40.41{col 46}{space 3}0.000{col 54}{space 4} 121624.1{col 67}{space 3} 134375.7
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 125,290)
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   4{txt},{res}     46{txt}){col 67}= {res}     12.60
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8109
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7855
+{txt}{col 49}Root MSE{col 67}= {res}13650.8634
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-2740.225{col 26}{space 2} 1920.825{col 37}{space 1}   -1.43{col 46}{space 3}0.160{col 54}{space 4}-6606.645{col 67}{space 3} 1126.195
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 14874.73{col 26}{space 2} 3596.492{col 37}{space 1}    4.14{col 46}{space 3}0.000{col 54}{space 4} 7635.363{col 67}{space 3} 22114.09
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 13451.46{col 26}{space 2} 1915.749{col 37}{space 1}    7.02{col 46}{space 3}0.000{col 54}{space 4} 9595.257{col 67}{space 3} 17307.66
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 10348.48{col 26}{space 2} 3075.695{col 37}{space 1}    3.36{col 46}{space 3}0.002{col 54}{space 4} 4157.423{col 67}{space 3} 16539.53
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 127829.6{col 26}{space 2} 1944.248{col 37}{space 1}   65.75{col 46}{space 3}0.000{col 54}{space 4}   123916{col 67}{space 3} 131743.1
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 125,290)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     25.07
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8219
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7958
+{txt}{col 49}Root MSE{col 67}= {res}13319.8707
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 405.8868{col 26}{space 2} 1949.591{col 37}{space 1}    0.21{col 46}{space 3}0.836{col 54}{space 4}-3518.437{col 67}{space 3}  4330.21
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 17252.78{col 26}{space 2} 4388.326{col 37}{space 1}    3.93{col 46}{space 3}0.000{col 54}{space 4} 8419.533{col 67}{space 3} 26086.02
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 10342.24{col 26}{space 2} 1825.997{col 37}{space 1}    5.66{col 46}{space 3}0.000{col 54}{space 4} 6666.699{col 67}{space 3} 14017.78
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 3149.459{col 26}{space 2} 3467.563{col 37}{space 1}    0.91{col 46}{space 3}0.368{col 54}{space 4}-3830.384{col 67}{space 3}  10129.3
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} -9026.27{col 26}{space 2} 2117.775{col 37}{space 1}   -4.26{col 46}{space 3}0.000{col 54}{space 4}-13289.13{col 67}{space 3}-4763.409
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 1933.631{col 26}{space 2} 1442.451{col 37}{space 1}    1.34{col 46}{space 3}0.187{col 54}{space 4}-969.8723{col 67}{space 3} 4837.134
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 6547.117{col 26}{space 2} 2539.255{col 37}{space 1}    2.58{col 46}{space 3}0.013{col 54}{space 4} 1435.861{col 67}{space 3} 11658.37
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-6210.128{col 26}{space 2} 1099.999{col 37}{space 1}   -5.65{col 46}{space 3}0.000{col 54}{space 4}-8424.311{col 67}{space 3}-3995.946
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 129988.3{col 26}{space 2} 1882.549{col 37}{space 1}   69.05{col 46}{space 3}0.000{col 54}{space 4} 126198.9{col 67}{space 3} 133777.7
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 125,290)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     25.07
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8219
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7958
+{txt}{col 49}Root MSE{col 67}= {res}13319.8707
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 405.8868{col 26}{space 2} 1949.591{col 37}{space 1}    0.21{col 46}{space 3}0.836{col 54}{space 4}-3518.437{col 67}{space 3}  4330.21
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 17252.78{col 26}{space 2} 4388.326{col 37}{space 1}    3.93{col 46}{space 3}0.000{col 54}{space 4} 8419.533{col 67}{space 3} 26086.02
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 10342.24{col 26}{space 2} 1825.997{col 37}{space 1}    5.66{col 46}{space 3}0.000{col 54}{space 4} 6666.699{col 67}{space 3} 14017.78
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 3149.459{col 26}{space 2} 3467.563{col 37}{space 1}    0.91{col 46}{space 3}0.368{col 54}{space 4}-3830.384{col 67}{space 3}  10129.3
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} -9026.27{col 26}{space 2} 2117.775{col 37}{space 1}   -4.26{col 46}{space 3}0.000{col 54}{space 4}-13289.13{col 67}{space 3}-4763.409
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 1933.631{col 26}{space 2} 1442.451{col 37}{space 1}    1.34{col 46}{space 3}0.187{col 54}{space 4}-969.8723{col 67}{space 3} 4837.134
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 6547.117{col 26}{space 2} 2539.255{col 37}{space 1}    2.58{col 46}{space 3}0.013{col 54}{space 4} 1435.861{col 67}{space 3} 11658.37
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-6210.128{col 26}{space 2} 1099.999{col 37}{space 1}   -5.65{col 46}{space 3}0.000{col 54}{space 4}-8424.311{col 67}{space 3}-3995.946
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 129988.3{col 26}{space 2} 1882.549{col 37}{space 1}   69.05{col 46}{space 3}0.000{col 54}{space 4} 126198.9{col 67}{space 3} 133777.7
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table9.tex, replace
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Individual Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 28,795)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       419
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     24.48
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.7344
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.6950
+{txt}{col 49}Root MSE{col 67}= {res}32123.2215
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 11958.75{col 26}{space 2} 4318.524{col 37}{space 1}    2.77{col 46}{space 3}0.008{col 54}{space 4} 3266.014{col 67}{space 3} 20651.49
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}  64659.2{col 26}{space 2} 6205.625{col 37}{space 1}   10.42{col 46}{space 3}0.000{col 54}{space 4} 52167.92{col 67}{space 3} 77150.47
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 37378.62{col 26}{space 2} 5189.807{col 37}{space 1}    7.20{col 46}{space 3}0.000{col 54}{space 4} 26932.08{col 67}{space 3} 47825.15
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 43201.17{col 26}{space 2} 6301.982{col 37}{space 1}    6.86{col 46}{space 3}0.000{col 54}{space 4} 30515.93{col 67}{space 3}  55886.4
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-41249.95{col 26}{space 2} 6986.911{col 37}{space 1}   -5.90{col 46}{space 3}0.000{col 54}{space 4}-55313.87{col 67}{space 3}-27186.03
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-13744.61{col 26}{space 2} 3771.736{col 37}{space 1}   -3.64{col 46}{space 3}0.001{col 54}{space 4}-21336.72{col 67}{space 3}-6152.497
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 11399.96{col 26}{space 2} 8258.625{col 37}{space 1}    1.38{col 46}{space 3}0.174{col 54}{space 4}-5223.786{col 67}{space 3} 28023.71
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-7119.763{col 26}{space 2} 4434.555{col 37}{space 1}   -1.61{col 46}{space 3}0.115{col 54}{space 4}-16046.06{col 67}{space 3} 1806.534
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 143204.1{col 26}{space 2} 3006.178{col 37}{space 1}   47.64{col 46}{space 3}0.000{col 54}{space 4}   137153{col 67}{space 3} 149255.2
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table9.tex, append
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Rouund-trip Air / Ship"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 323,265)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     66.72
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9052
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.8913
+{txt}{col 49}Root MSE{col 67}= {res} 4809.9369
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 2146.044{col 26}{space 2} 1479.199{col 37}{space 1}    1.45{col 46}{space 3}0.154{col 54}{space 4}-831.4291{col 67}{space 3} 5123.518
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}  4271.71{col 26}{space 2} 1325.355{col 37}{space 1}    3.22{col 46}{space 3}0.002{col 54}{space 4} 1603.909{col 67}{space 3}  6939.51
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 8766.903{col 26}{space 2} 1620.473{col 37}{space 1}    5.41{col 46}{space 3}0.000{col 54}{space 4} 5505.061{col 67}{space 3} 12028.74
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-503.1781{col 26}{space 2} 1629.904{col 37}{space 1}   -0.31{col 46}{space 3}0.759{col 54}{space 4}-3784.006{col 67}{space 3} 2777.649
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-1999.577{col 26}{space 2} 632.9635{col 37}{space 1}   -3.16{col 46}{space 3}0.003{col 54}{space 4}-3273.666{col 67}{space 3}-725.4872
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 1691.632{col 26}{space 2}  1267.25{col 37}{space 1}    1.33{col 46}{space 3}0.188{col 54}{space 4} -859.211{col 67}{space 3} 4242.475
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 1189.006{col 26}{space 2} 1844.635{col 37}{space 1}    0.64{col 46}{space 3}0.522{col 54}{space 4} -2524.05{col 67}{space 3} 4902.063
+{txt}{space 10}4  {c |}{col 14}{res}{space 2} 77.26832{col 26}{space 2} 668.4657{col 37}{space 1}    0.12{col 46}{space 3}0.908{col 54}{space 4}-1268.283{col 67}{space 3}  1422.82
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 59778.42{col 26}{space 2} 802.9427{col 37}{space 1}   74.45{col 46}{space 3}0.000{col 54}{space 4} 58162.18{col 67}{space 3} 61394.66
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table9.tex, append
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Accommodation"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 145,744)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     26.38
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8511
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.8292
+{txt}{col 49}Root MSE{col 67}= {res} 4300.7572
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 3515.286{col 26}{space 2} 770.1025{col 37}{space 1}    4.56{col 46}{space 3}0.000{col 54}{space 4}  1965.15{col 67}{space 3} 5065.422
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 640.9741{col 26}{space 2} 2566.088{col 37}{space 1}    0.25{col 46}{space 3}0.804{col 54}{space 4}-4524.293{col 67}{space 3} 5806.241
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 1603.158{col 26}{space 2} 2142.942{col 37}{space 1}    0.75{col 46}{space 3}0.458{col 54}{space 4}-2710.361{col 67}{space 3} 5916.678
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-2448.872{col 26}{space 2} 2175.728{col 37}{space 1}   -1.13{col 46}{space 3}0.266{col 54}{space 4}-6828.385{col 67}{space 3} 1930.641
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-4353.318{col 26}{space 2}  1511.64{col 37}{space 1}   -2.88{col 46}{space 3}0.006{col 54}{space 4} -7396.09{col 67}{space 3}-1310.545
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-1464.539{col 26}{space 2} 859.7647{col 37}{space 1}   -1.70{col 46}{space 3}0.095{col 54}{space 4}-3195.155{col 67}{space 3} 266.0779
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 1425.757{col 26}{space 2} 682.7899{col 37}{space 1}    2.09{col 46}{space 3}0.042{col 54}{space 4} 51.37209{col 67}{space 3} 2800.141
+{txt}{space 10}4  {c |}{col 14}{res}{space 2} 729.1821{col 26}{space 2}  356.631{col 37}{space 1}    2.04{col 46}{space 3}0.047{col 54}{space 4} 11.32112{col 67}{space 3} 1447.043
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 26326.03{col 26}{space 2} 1307.878{col 37}{space 1}   20.13{col 46}{space 3}0.000{col 54}{space 4} 23693.41{col 67}{space 3} 28958.66
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, replace
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Food"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 209,401)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     18.88
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9364
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.9270
+{txt}{col 49}Root MSE{col 67}= {res} 1787.3392
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 3441.159{col 26}{space 2} 479.4373{col 37}{space 1}    7.18{col 46}{space 3}0.000{col 54}{space 4} 2476.102{col 67}{space 3} 4406.216
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-966.5913{col 26}{space 2} 780.0925{col 37}{space 1}   -1.24{col 46}{space 3}0.222{col 54}{space 4}-2536.836{col 67}{space 3} 603.6534
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-857.8138{col 26}{space 2} 610.6219{col 37}{space 1}   -1.40{col 46}{space 3}0.167{col 54}{space 4}-2086.932{col 67}{space 3} 371.3044
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-3776.829{col 26}{space 2} 633.0344{col 37}{space 1}   -5.97{col 46}{space 3}0.000{col 54}{space 4}-5051.062{col 67}{space 3}-2502.597
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-241.1749{col 26}{space 2}  445.135{col 37}{space 1}   -0.54{col 46}{space 3}0.591{col 54}{space 4}-1137.185{col 67}{space 3} 654.8353
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 91.24434{col 26}{space 2} 337.9508{col 37}{space 1}    0.27{col 46}{space 3}0.788{col 54}{space 4}-589.0153{col 67}{space 3}  771.504
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 2694.472{col 26}{space 2}  378.651{col 37}{space 1}    7.12{col 46}{space 3}0.000{col 54}{space 4} 1932.288{col 67}{space 3} 3456.657
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-183.9335{col 26}{space 2} 227.2635{col 37}{space 1}   -0.81{col 46}{space 3}0.422{col 54}{space 4}-641.3913{col 67}{space 3} 273.5243
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 14192.35{col 26}{space 2} 460.0538{col 37}{space 1}   30.85{col 46}{space 3}0.000{col 54}{space 4} 13266.31{col 67}{space 3} 15118.39
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Overall"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 100,717)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     25.28
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9282
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.9177
+{txt}{col 49}Root MSE{col 67}= {res}  556.2161
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-400.6023{col 26}{space 2} 146.1581{col 37}{space 1}   -2.74{col 46}{space 3}0.009{col 54}{space 4}-694.8032{col 67}{space 3}-106.4014
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-623.0062{col 26}{space 2} 78.88238{col 37}{space 1}   -7.90{col 46}{space 3}0.000{col 54}{space 4}-781.7882{col 67}{space 3}-464.2242
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} -180.287{col 26}{space 2} 133.7222{col 37}{space 1}   -1.35{col 46}{space 3}0.184{col 54}{space 4}-449.4559{col 67}{space 3} 88.88192
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-146.3474{col 26}{space 2} 154.2546{col 37}{space 1}   -0.95{col 46}{space 3}0.348{col 54}{space 4}-456.8458{col 67}{space 3}  164.151
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-247.2462{col 26}{space 2} 83.10334{col 37}{space 1}   -2.98{col 46}{space 3}0.005{col 54}{space 4}-414.5245{col 67}{space 3}-79.96784
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-307.9684{col 26}{space 2} 114.3623{col 37}{space 1}   -2.69{col 46}{space 3}0.010{col 54}{space 4}-538.1677{col 67}{space 3}-77.76907
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} -157.738{col 26}{space 2} 172.3081{col 37}{space 1}   -0.92{col 46}{space 3}0.365{col 54}{space 4}-504.5763{col 67}{space 3} 189.1003
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-535.6659{col 26}{space 2} 111.8846{col 37}{space 1}   -4.79{col 46}{space 3}0.000{col 54}{space 4}-760.8779{col 67}{space 3}-310.4539
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3756.435{col 26}{space 2} 44.55275{col 37}{space 1}   84.31{col 46}{space 3}0.000{col 54}{space 4} 3666.755{col 67}{space 3} 3846.115
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Train"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 71,807)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       416
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     57.41
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8958
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.8802
+{txt}{col 49}Root MSE{col 67}= {res}  496.0691
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-402.1771{col 26}{space 2} 259.7298{col 37}{space 1}   -1.55{col 46}{space 3}0.128{col 54}{space 4}-924.9861{col 67}{space 3} 120.6319
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-643.4922{col 26}{space 2} 174.8412{col 37}{space 1}   -3.68{col 46}{space 3}0.001{col 54}{space 4}-995.4292{col 67}{space 3}-291.5552
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-400.0621{col 26}{space 2} 121.5583{col 37}{space 1}   -3.29{col 46}{space 3}0.002{col 54}{space 4}-644.7462{col 67}{space 3} -155.378
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-219.9096{col 26}{space 2}    207.5{col 37}{space 1}   -1.06{col 46}{space 3}0.295{col 54}{space 4}-637.5855{col 67}{space 3} 197.7663
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-149.6167{col 26}{space 2} 137.9277{col 37}{space 1}   -1.08{col 46}{space 3}0.284{col 54}{space 4}-427.2508{col 67}{space 3} 128.0174
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-220.2763{col 26}{space 2} 72.42387{col 37}{space 1}   -3.04{col 46}{space 3}0.004{col 54}{space 4} -366.058{col 67}{space 3}-74.49463
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-459.4234{col 26}{space 2} 341.8964{col 37}{space 1}   -1.34{col 46}{space 3}0.186{col 54}{space 4}-1147.625{col 67}{space 3} 228.7783
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-502.6366{col 26}{space 2} 114.5627{col 37}{space 1}   -4.39{col 46}{space 3}0.000{col 54}{space 4}-733.2394{col 67}{space 3}-272.0339
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3122.702{col 26}{space 2} 117.2176{col 37}{space 1}   26.64{col 46}{space 3}0.000{col 54}{space 4} 2886.755{col 67}{space 3} 3358.649
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Bus/Taxi"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 42,778)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     12.43
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.7948
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7647
+{txt}{col 49}Root MSE{col 67}= {res}  499.3314
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-233.2398{col 26}{space 2} 126.8112{col 37}{space 1}   -1.84{col 46}{space 3}0.072{col 54}{space 4}-488.4975{col 67}{space 3}  22.0179
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-495.7981{col 26}{space 2} 119.4143{col 37}{space 1}   -4.15{col 46}{space 3}0.000{col 54}{space 4}-736.1666{col 67}{space 3}-255.4295
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-193.6354{col 26}{space 2} 133.2717{col 37}{space 1}   -1.45{col 46}{space 3}0.153{col 54}{space 4}-461.8974{col 67}{space 3} 74.62662
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-251.9702{col 26}{space 2} 244.7481{col 37}{space 1}   -1.03{col 46}{space 3}0.309{col 54}{space 4}-744.6227{col 67}{space 3} 240.6822
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-202.5215{col 26}{space 2} 55.02662{col 37}{space 1}   -3.68{col 46}{space 3}0.001{col 54}{space 4}-313.2844{col 67}{space 3}-91.75867
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-195.1692{col 26}{space 2} 137.6149{col 37}{space 1}   -1.42{col 46}{space 3}0.163{col 54}{space 4}-472.1737{col 67}{space 3} 81.83522
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-190.3277{col 26}{space 2} 192.5418{col 37}{space 1}   -0.99{col 46}{space 3}0.328{col 54}{space 4}-577.8942{col 67}{space 3} 197.2388
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-412.0367{col 26}{space 2} 100.4877{col 37}{space 1}   -4.10{col 46}{space 3}0.000{col 54}{space 4} -614.308{col 67}{space 3}-209.7654
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2622.072{col 26}{space 2} 87.01902{col 37}{space 1}   30.13{col 46}{space 3}0.000{col 54}{space 4} 2446.912{col 67}{space 3} 2797.233
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Others"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 6,574)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       396
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}      8.58
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.6195
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.5592
+{txt}{col 49}Root MSE{col 67}= {res} 3772.7608
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1579.061{col 26}{space 2} 1096.427{col 37}{space 1}    1.44{col 46}{space 3}0.157{col 54}{space 4}-627.9331{col 67}{space 3} 3786.054
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} -816.035{col 26}{space 2} 620.9986{col 37}{space 1}   -1.31{col 46}{space 3}0.195{col 54}{space 4} -2066.04{col 67}{space 3} 433.9704
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 1302.815{col 26}{space 2} 1186.848{col 37}{space 1}    1.10{col 46}{space 3}0.278{col 54}{space 4}-1086.185{col 67}{space 3} 3691.815
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-1440.054{col 26}{space 2} 1222.848{col 37}{space 1}   -1.18{col 46}{space 3}0.245{col 54}{space 4} -3901.52{col 67}{space 3} 1021.412
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-398.3164{col 26}{space 2} 437.0631{col 37}{space 1}   -0.91{col 46}{space 3}0.367{col 54}{space 4}-1278.079{col 67}{space 3} 481.4459
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-829.1212{col 26}{space 2} 801.8495{col 37}{space 1}   -1.03{col 46}{space 3}0.307{col 54}{space 4}-2443.161{col 67}{space 3} 784.9182
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 5038.889{col 26}{space 2} 2418.397{col 37}{space 1}    2.08{col 46}{space 3}0.043{col 54}{space 4} 170.9076{col 67}{space 3} 9906.871
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-671.1438{col 26}{space 2} 726.7844{col 37}{space 1}   -0.92{col 46}{space 3}0.361{col 54}{space 4}-2134.085{col 67}{space 3} 791.7972
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 7352.467{col 26}{space 2}  739.463{col 37}{space 1}    9.94{col 46}{space 3}0.000{col 54}{space 4} 5864.005{col 67}{space 3} 8840.929
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Leisure"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 52,919)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}      9.92
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.7790
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7465
+{txt}{col 49}Root MSE{col 67}= {res} 4177.5596
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  3065.29{col 26}{space 2}  1250.43{col 37}{space 1}    2.45{col 46}{space 3}0.018{col 54}{space 4} 548.3047{col 67}{space 3} 5582.275
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-3060.593{col 26}{space 2} 1384.677{col 37}{space 1}   -2.21{col 46}{space 3}0.032{col 54}{space 4}-5847.804{col 67}{space 3}-273.3818
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-1332.784{col 26}{space 2} 1774.021{col 37}{space 1}   -0.75{col 46}{space 3}0.456{col 54}{space 4}-4903.702{col 67}{space 3} 2238.134
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-4316.015{col 26}{space 2} 2276.378{col 37}{space 1}   -1.90{col 46}{space 3}0.064{col 54}{space 4}-8898.126{col 67}{space 3} 266.0958
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} 1147.503{col 26}{space 2} 403.1508{col 37}{space 1}    2.85{col 46}{space 3}0.007{col 54}{space 4} 336.0025{col 67}{space 3} 1959.003
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-527.1809{col 26}{space 2} 772.0561{col 37}{space 1}   -0.68{col 46}{space 3}0.498{col 54}{space 4}-2081.249{col 67}{space 3} 1026.888
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 2635.173{col 26}{space 2} 1660.853{col 37}{space 1}    1.59{col 46}{space 3}0.119{col 54}{space 4}-707.9506{col 67}{space 3} 5978.297
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-1673.518{col 26}{space 2} 951.7072{col 37}{space 1}   -1.76{col 46}{space 3}0.085{col 54}{space 4}-3589.205{col 67}{space 3} 242.1693
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11761.67{col 26}{space 2} 971.8385{col 37}{space 1}   12.10{col 46}{space 3}0.000{col 54}{space 4} 9805.459{col 67}{space 3} 13717.88
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Shopping"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 209,476)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     13.28
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9700
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.9656
+{txt}{col 49}Root MSE{col 67}= {res} 2769.3717
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  174.334{col 26}{space 2} 1623.507{col 37}{space 1}    0.11{col 46}{space 3}0.915{col 54}{space 4}-3093.615{col 67}{space 3} 3442.284
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-1249.261{col 26}{space 2} 899.2363{col 37}{space 1}   -1.39{col 46}{space 3}0.171{col 54}{space 4} -3059.33{col 67}{space 3} 560.8077
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-4378.173{col 26}{space 2} 1290.326{col 37}{space 1}   -3.39{col 46}{space 3}0.001{col 54}{space 4}-6975.464{col 67}{space 3}-1780.883
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}-1623.971{col 26}{space 2} 992.2539{col 37}{space 1}   -1.64{col 46}{space 3}0.109{col 54}{space 4}-3621.274{col 67}{space 3} 373.3329
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-4498.497{col 26}{space 2} 1682.294{col 37}{space 1}   -2.67{col 46}{space 3}0.010{col 54}{space 4}-7884.779{col 67}{space 3}-1112.215
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-1856.366{col 26}{space 2} 735.7882{col 37}{space 1}   -2.52{col 46}{space 3}0.015{col 54}{space 4}-3337.431{col 67}{space 3} -375.301
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} -1284.28{col 26}{space 2}  1391.14{col 37}{space 1}   -0.92{col 46}{space 3}0.361{col 54}{space 4}  -4084.5{col 67}{space 3}  1515.94
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-2221.399{col 26}{space 2} 722.4268{col 37}{space 1}   -3.07{col 46}{space 3}0.004{col 54}{space 4}-3675.569{col 67}{space 3}-767.2294
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 31025.81{col 26}{space 2} 1009.596{col 37}{space 1}   30.73{col 46}{space 3}0.000{col 54}{space 4}  28993.6{col 67}{space 3} 33058.02
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Others"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project q2 q3 q4 i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 2,490)
+{p 0 6 2}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       316
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}      9.89
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.4815
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.3742
+{txt}{col 49}Root MSE{col 67}= {res} 2722.2395
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 2931.421{col 26}{space 2} 1458.366{col 37}{space 1}    2.01{col 46}{space 3}0.050{col 54}{space 4}-4.118048{col 67}{space 3} 5866.959
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}-938.2253{col 26}{space 2} 1016.839{col 37}{space 1}   -0.92{col 46}{space 3}0.361{col 54}{space 4}-2985.015{col 67}{space 3} 1108.565
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}-114.2484{col 26}{space 2} 712.8458{col 37}{space 1}   -0.16{col 46}{space 3}0.873{col 54}{space 4}-1549.133{col 67}{space 3} 1320.636
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 300.3285{col 26}{space 2} 2535.948{col 37}{space 1}    0.12{col 46}{space 3}0.906{col 54}{space 4} -4804.27{col 67}{space 3} 5404.927
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}  1892.34{col 26}{space 2} 1765.862{col 37}{space 1}    1.07{col 46}{space 3}0.289{col 54}{space 4}-1662.156{col 67}{space 3} 5446.836
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} -852.661{col 26}{space 2}  1254.17{col 37}{space 1}   -0.68{col 46}{space 3}0.500{col 54}{space 4}-3377.173{col 67}{space 3} 1671.851
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-143.5142{col 26}{space 2} 1938.077{col 37}{space 1}   -0.07{col 46}{space 3}0.941{col 54}{space 4}-4044.661{col 67}{space 3} 3757.632
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-1218.942{col 26}{space 2} 914.5572{col 37}{space 1}   -1.33{col 46}{space 3}0.189{col 54}{space 4} -3059.85{col 67}{space 3} 621.9664
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2132.372{col 26}{space 2} 473.4041{col 37}{space 1}    4.50{col 46}{space 3}0.000{col 54}{space 4} 1179.459{col 67}{space 3} 3085.285
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 125,290)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     25.07
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8219
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7958
+{txt}{col 49}Root MSE{col 67}= {res}13319.8707
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 405.8868{col 26}{space 2} 1949.591{col 37}{space 1}    0.21{col 46}{space 3}0.836{col 54}{space 4}-3518.437{col 67}{space 3}  4330.21
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} 8226.506{col 26}{space 2} 2870.318{col 37}{space 1}    2.87{col 46}{space 3}0.006{col 54}{space 4} 2448.855{col 67}{space 3} 14004.16
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 12275.87{col 26}{space 2} 2193.022{col 37}{space 1}    5.60{col 46}{space 3}0.000{col 54}{space 4} 7861.548{col 67}{space 3} 16690.19
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 9696.576{col 26}{space 2} 3173.443{col 37}{space 1}    3.06{col 46}{space 3}0.004{col 54}{space 4} 3308.766{col 67}{space 3} 16084.39
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-6210.128{col 26}{space 2} 1099.999{col 37}{space 1}   -5.65{col 46}{space 3}0.000{col 54}{space 4}-8424.311{col 67}{space 3}-3995.946
+{txt}{space 10}5  {c |}{col 14}{res}{space 2} 17252.78{col 26}{space 2} 4388.326{col 37}{space 1}    3.93{col 46}{space 3}0.000{col 54}{space 4} 8419.533{col 67}{space 3} 26086.02
+{txt}{space 10}6  {c |}{col 14}{res}{space 2} 10342.24{col 26}{space 2} 1825.997{col 37}{space 1}    5.66{col 46}{space 3}0.000{col 54}{space 4} 6666.699{col 67}{space 3} 14017.78
+{txt}{space 10}7  {c |}{col 14}{res}{space 2} 3149.459{col 26}{space 2} 3467.563{col 37}{space 1}    0.91{col 46}{space 3}0.368{col 54}{space 4}-3830.384{col 67}{space 3}  10129.3
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 129988.3{col 26}{space 2} 1882.549{col 37}{space 1}   69.05{col 46}{space 3}0.000{col 54}{space 4} 126198.9{col 67}{space 3} 133777.7
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table9.tex, replace
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Individual Package"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 28,795)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       419
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     24.48
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.7344
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.6950
+{txt}{col 49}Root MSE{col 67}= {res}32123.2215
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 11958.75{col 26}{space 2} 4318.524{col 37}{space 1}    2.77{col 46}{space 3}0.008{col 54}{space 4} 3266.014{col 67}{space 3} 20651.49
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} 23409.25{col 26}{space 2} 6210.395{col 37}{space 1}    3.77{col 46}{space 3}0.000{col 54}{space 4} 10908.37{col 67}{space 3} 35910.12
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 23634.01{col 26}{space 2} 3620.301{col 37}{space 1}    6.53{col 46}{space 3}0.000{col 54}{space 4} 16346.72{col 67}{space 3}  30921.3
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 54601.13{col 26}{space 2} 5552.883{col 37}{space 1}    9.83{col 46}{space 3}0.000{col 54}{space 4} 43423.75{col 67}{space 3}  65778.5
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-7119.763{col 26}{space 2} 4434.555{col 37}{space 1}   -1.61{col 46}{space 3}0.115{col 54}{space 4}-16046.06{col 67}{space 3} 1806.534
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}  64659.2{col 26}{space 2} 6205.625{col 37}{space 1}   10.42{col 46}{space 3}0.000{col 54}{space 4} 52167.92{col 67}{space 3} 77150.47
+{txt}{space 10}6  {c |}{col 14}{res}{space 2} 37378.62{col 26}{space 2} 5189.807{col 37}{space 1}    7.20{col 46}{space 3}0.000{col 54}{space 4} 26932.08{col 67}{space 3} 47825.15
+{txt}{space 10}7  {c |}{col 14}{res}{space 2} 43201.17{col 26}{space 2} 6301.982{col 37}{space 1}    6.86{col 46}{space 3}0.000{col 54}{space 4} 30515.93{col 67}{space 3}  55886.4
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 143204.1{col 26}{space 2} 3006.178{col 37}{space 1}   47.64{col 46}{space 3}0.000{col 54}{space 4}   137153{col 67}{space 3} 149255.2
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table9.tex, append
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Rouund-trip Air / Ship"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 323,265)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     66.72
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9052
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.8913
+{txt}{col 49}Root MSE{col 67}= {res} 4809.9369
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 2146.044{col 26}{space 2} 1479.199{col 37}{space 1}    1.45{col 46}{space 3}0.154{col 54}{space 4}-831.4291{col 67}{space 3} 5123.518
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} 2272.133{col 26}{space 2} 1265.778{col 37}{space 1}    1.80{col 46}{space 3}0.079{col 54}{space 4}-275.7466{col 67}{space 3} 4820.013
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 10458.53{col 26}{space 2} 1458.986{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 7521.749{col 67}{space 3} 13395.32
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 685.8282{col 26}{space 2} 1198.948{col 37}{space 1}    0.57{col 46}{space 3}0.570{col 54}{space 4}-1727.529{col 67}{space 3} 3099.186
+{txt}{space 10}4  {c |}{col 14}{res}{space 2} 77.26832{col 26}{space 2} 668.4657{col 37}{space 1}    0.12{col 46}{space 3}0.908{col 54}{space 4}-1268.283{col 67}{space 3}  1422.82
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}  4271.71{col 26}{space 2} 1325.355{col 37}{space 1}    3.22{col 46}{space 3}0.002{col 54}{space 4} 1603.909{col 67}{space 3}  6939.51
+{txt}{space 10}6  {c |}{col 14}{res}{space 2} 8766.903{col 26}{space 2} 1620.473{col 37}{space 1}    5.41{col 46}{space 3}0.000{col 54}{space 4} 5505.061{col 67}{space 3} 12028.74
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-503.1781{col 26}{space 2} 1629.904{col 37}{space 1}   -0.31{col 46}{space 3}0.759{col 54}{space 4}-3784.006{col 67}{space 3} 2777.649
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 59778.42{col 26}{space 2} 802.9427{col 37}{space 1}   74.45{col 46}{space 3}0.000{col 54}{space 4} 58162.18{col 67}{space 3} 61394.66
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table9.tex, append
+{txt}{stata `"shellout using `"table9.tex"'"':table9.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table9.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Accommodation"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 145,744)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     26.38
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8511
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.8292
+{txt}{col 49}Root MSE{col 67}= {res} 4300.7572
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 3515.286{col 26}{space 2} 770.1025{col 37}{space 1}    4.56{col 46}{space 3}0.000{col 54}{space 4}  1965.15{col 67}{space 3} 5065.422
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-3712.344{col 26}{space 2} 1635.998{col 37}{space 1}   -2.27{col 46}{space 3}0.028{col 54}{space 4}-7005.436{col 67}{space 3} -419.251
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 138.6199{col 26}{space 2} 1611.502{col 37}{space 1}    0.09{col 46}{space 3}0.932{col 54}{space 4}-3105.166{col 67}{space 3} 3382.406
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-1023.115{col 26}{space 2} 1992.088{col 37}{space 1}   -0.51{col 46}{space 3}0.610{col 54}{space 4}-5032.981{col 67}{space 3} 2986.751
+{txt}{space 10}4  {c |}{col 14}{res}{space 2} 729.1821{col 26}{space 2}  356.631{col 37}{space 1}    2.04{col 46}{space 3}0.047{col 54}{space 4} 11.32112{col 67}{space 3} 1447.043
+{txt}{space 10}5  {c |}{col 14}{res}{space 2} 640.9741{col 26}{space 2} 2566.088{col 37}{space 1}    0.25{col 46}{space 3}0.804{col 54}{space 4}-4524.293{col 67}{space 3} 5806.241
+{txt}{space 10}6  {c |}{col 14}{res}{space 2} 1603.158{col 26}{space 2} 2142.942{col 37}{space 1}    0.75{col 46}{space 3}0.458{col 54}{space 4}-2710.361{col 67}{space 3} 5916.678
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-2448.872{col 26}{space 2} 2175.728{col 37}{space 1}   -1.13{col 46}{space 3}0.266{col 54}{space 4}-6828.385{col 67}{space 3} 1930.641
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 26326.03{col 26}{space 2} 1307.878{col 37}{space 1}   20.13{col 46}{space 3}0.000{col 54}{space 4} 23693.41{col 67}{space 3} 28958.66
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, replace
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Food"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 209,401)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     18.88
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9364
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.9270
+{txt}{col 49}Root MSE{col 67}= {res} 1787.3392
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 3441.159{col 26}{space 2} 479.4373{col 37}{space 1}    7.18{col 46}{space 3}0.000{col 54}{space 4} 2476.102{col 67}{space 3} 4406.216
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-1207.766{col 26}{space 2} 601.6556{col 37}{space 1}   -2.01{col 46}{space 3}0.051{col 54}{space 4}-2418.836{col 67}{space 3} 3.303751
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-766.5695{col 26}{space 2} 567.9861{col 37}{space 1}   -1.35{col 46}{space 3}0.184{col 54}{space 4}-1909.866{col 67}{space 3} 376.7273
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-1082.357{col 26}{space 2} 685.7678{col 37}{space 1}   -1.58{col 46}{space 3}0.121{col 54}{space 4}-2462.736{col 67}{space 3}  298.022
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-183.9335{col 26}{space 2} 227.2635{col 37}{space 1}   -0.81{col 46}{space 3}0.422{col 54}{space 4}-641.3913{col 67}{space 3} 273.5243
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-966.5913{col 26}{space 2} 780.0925{col 37}{space 1}   -1.24{col 46}{space 3}0.222{col 54}{space 4}-2536.836{col 67}{space 3} 603.6534
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-857.8138{col 26}{space 2} 610.6219{col 37}{space 1}   -1.40{col 46}{space 3}0.167{col 54}{space 4}-2086.932{col 67}{space 3} 371.3044
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-3776.829{col 26}{space 2} 633.0344{col 37}{space 1}   -5.97{col 46}{space 3}0.000{col 54}{space 4}-5051.062{col 67}{space 3}-2502.597
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 14192.35{col 26}{space 2} 460.0538{col 37}{space 1}   30.85{col 46}{space 3}0.000{col 54}{space 4} 13266.31{col 67}{space 3} 15118.39
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Overall"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 100,717)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     25.28
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9282
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.9177
+{txt}{col 49}Root MSE{col 67}= {res}  556.2161
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-400.6023{col 26}{space 2} 146.1581{col 37}{space 1}   -2.74{col 46}{space 3}0.009{col 54}{space 4}-694.8032{col 67}{space 3}-106.4014
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-870.2524{col 26}{space 2} 86.04228{col 37}{space 1}  -10.11{col 46}{space 3}0.000{col 54}{space 4}-1043.447{col 67}{space 3}-697.0583
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-488.2554{col 26}{space 2} 73.94386{col 37}{space 1}   -6.60{col 46}{space 3}0.000{col 54}{space 4}-637.0966{col 67}{space 3}-339.4141
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-304.0855{col 26}{space 2} 93.60236{col 37}{space 1}   -3.25{col 46}{space 3}0.002{col 54}{space 4}-492.4973{col 67}{space 3}-115.6737
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-535.6659{col 26}{space 2} 111.8846{col 37}{space 1}   -4.79{col 46}{space 3}0.000{col 54}{space 4}-760.8779{col 67}{space 3}-310.4539
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-623.0062{col 26}{space 2} 78.88238{col 37}{space 1}   -7.90{col 46}{space 3}0.000{col 54}{space 4}-781.7882{col 67}{space 3}-464.2242
+{txt}{space 10}6  {c |}{col 14}{res}{space 2} -180.287{col 26}{space 2} 133.7222{col 37}{space 1}   -1.35{col 46}{space 3}0.184{col 54}{space 4}-449.4559{col 67}{space 3} 88.88192
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-146.3474{col 26}{space 2} 154.2546{col 37}{space 1}   -0.95{col 46}{space 3}0.348{col 54}{space 4}-456.8458{col 67}{space 3}  164.151
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3756.435{col 26}{space 2} 44.55275{col 37}{space 1}   84.31{col 46}{space 3}0.000{col 54}{space 4} 3666.755{col 67}{space 3} 3846.115
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Train"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 71,807)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       416
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     57.41
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.8958
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.8802
+{txt}{col 49}Root MSE{col 67}= {res}  496.0691
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-402.1771{col 26}{space 2} 259.7298{col 37}{space 1}   -1.55{col 46}{space 3}0.128{col 54}{space 4}-924.9861{col 67}{space 3} 120.6319
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-793.1089{col 26}{space 2} 123.4521{col 37}{space 1}   -6.42{col 46}{space 3}0.000{col 54}{space 4}-1041.605{col 67}{space 3}-544.6126
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-620.3384{col 26}{space 2} 156.1804{col 37}{space 1}   -3.97{col 46}{space 3}0.000{col 54}{space 4}-934.7132{col 67}{space 3}-305.9637
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-679.3331{col 26}{space 2} 158.3176{col 37}{space 1}   -4.29{col 46}{space 3}0.000{col 54}{space 4}-998.0099{col 67}{space 3}-360.6562
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-502.6366{col 26}{space 2} 114.5627{col 37}{space 1}   -4.39{col 46}{space 3}0.000{col 54}{space 4}-733.2394{col 67}{space 3}-272.0339
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-643.4922{col 26}{space 2} 174.8412{col 37}{space 1}   -3.68{col 46}{space 3}0.001{col 54}{space 4}-995.4292{col 67}{space 3}-291.5552
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-400.0621{col 26}{space 2} 121.5583{col 37}{space 1}   -3.29{col 46}{space 3}0.002{col 54}{space 4}-644.7462{col 67}{space 3} -155.378
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-219.9096{col 26}{space 2}    207.5{col 37}{space 1}   -1.06{col 46}{space 3}0.295{col 54}{space 4}-637.5855{col 67}{space 3} 197.7663
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3122.702{col 26}{space 2} 117.2176{col 37}{space 1}   26.64{col 46}{space 3}0.000{col 54}{space 4} 2886.755{col 67}{space 3} 3358.649
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Bus/Taxi"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 42,778)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     12.43
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.7948
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7647
+{txt}{col 49}Root MSE{col 67}= {res}  499.3314
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}-233.2398{col 26}{space 2} 126.8112{col 37}{space 1}   -1.84{col 46}{space 3}0.072{col 54}{space 4}-488.4975{col 67}{space 3}  22.0179
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-698.3196{col 26}{space 2} 127.9127{col 37}{space 1}   -5.46{col 46}{space 3}0.000{col 54}{space 4}-955.7945{col 67}{space 3}-440.8447
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-388.8046{col 26}{space 2} 104.7079{col 37}{space 1}   -3.71{col 46}{space 3}0.001{col 54}{space 4}-599.5707{col 67}{space 3}-178.0384
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-442.2979{col 26}{space 2} 148.6694{col 37}{space 1}   -2.98{col 46}{space 3}0.005{col 54}{space 4} -741.554{col 67}{space 3}-143.0419
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-412.0367{col 26}{space 2} 100.4877{col 37}{space 1}   -4.10{col 46}{space 3}0.000{col 54}{space 4} -614.308{col 67}{space 3}-209.7654
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-495.7981{col 26}{space 2} 119.4143{col 37}{space 1}   -4.15{col 46}{space 3}0.000{col 54}{space 4}-736.1666{col 67}{space 3}-255.4295
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-193.6354{col 26}{space 2} 133.2717{col 37}{space 1}   -1.45{col 46}{space 3}0.153{col 54}{space 4}-461.8974{col 67}{space 3} 74.62662
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-251.9702{col 26}{space 2} 244.7481{col 37}{space 1}   -1.03{col 46}{space 3}0.309{col 54}{space 4}-744.6227{col 67}{space 3} 240.6822
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2622.072{col 26}{space 2} 87.01902{col 37}{space 1}   30.13{col 46}{space 3}0.000{col 54}{space 4} 2446.912{col 67}{space 3} 2797.233
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Transportation - Others"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 6,574)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       396
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}      8.58
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.6195
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.5592
+{txt}{col 49}Root MSE{col 67}= {res} 3772.7608
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1579.061{col 26}{space 2} 1096.427{col 37}{space 1}    1.44{col 46}{space 3}0.157{col 54}{space 4}-627.9331{col 67}{space 3} 3786.054
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-1214.351{col 26}{space 2} 845.7121{col 37}{space 1}   -1.44{col 46}{space 3}0.158{col 54}{space 4}-2916.682{col 67}{space 3} 487.9788
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 473.6939{col 26}{space 2}  752.464{col 37}{space 1}    0.63{col 46}{space 3}0.532{col 54}{space 4}-1040.938{col 67}{space 3} 1988.325
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 3598.835{col 26}{space 2} 1833.016{col 37}{space 1}    1.96{col 46}{space 3}0.056{col 54}{space 4} -90.8355{col 67}{space 3} 7288.505
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-671.1438{col 26}{space 2} 726.7844{col 37}{space 1}   -0.92{col 46}{space 3}0.361{col 54}{space 4}-2134.085{col 67}{space 3} 791.7972
+{txt}{space 10}5  {c |}{col 14}{res}{space 2} -816.035{col 26}{space 2} 620.9986{col 37}{space 1}   -1.31{col 46}{space 3}0.195{col 54}{space 4} -2066.04{col 67}{space 3} 433.9704
+{txt}{space 10}6  {c |}{col 14}{res}{space 2} 1302.815{col 26}{space 2} 1186.848{col 37}{space 1}    1.10{col 46}{space 3}0.278{col 54}{space 4}-1086.185{col 67}{space 3} 3691.815
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-1440.054{col 26}{space 2} 1222.848{col 37}{space 1}   -1.18{col 46}{space 3}0.245{col 54}{space 4} -3901.52{col 67}{space 3} 1021.412
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 7352.467{col 26}{space 2}  739.463{col 37}{space 1}    9.94{col 46}{space 3}0.000{col 54}{space 4} 5864.005{col 67}{space 3} 8840.929
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Leisure"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 52,919)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}      9.92
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.7790
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.7465
+{txt}{col 49}Root MSE{col 67}= {res} 4177.5596
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  3065.29{col 26}{space 2}  1250.43{col 37}{space 1}    2.45{col 46}{space 3}0.018{col 54}{space 4} 548.3047{col 67}{space 3} 5582.275
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} -1913.09{col 26}{space 2} 1475.028{col 37}{space 1}   -1.30{col 46}{space 3}0.201{col 54}{space 4}-4882.168{col 67}{space 3} 1055.988
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-1859.965{col 26}{space 2} 1120.808{col 37}{space 1}   -1.66{col 46}{space 3}0.104{col 54}{space 4}-4116.033{col 67}{space 3} 396.1037
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-1680.842{col 26}{space 2} 1081.426{col 37}{space 1}   -1.55{col 46}{space 3}0.127{col 54}{space 4}-3857.639{col 67}{space 3} 495.9557
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-1673.518{col 26}{space 2} 951.7072{col 37}{space 1}   -1.76{col 46}{space 3}0.085{col 54}{space 4}-3589.205{col 67}{space 3} 242.1693
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-3060.593{col 26}{space 2} 1384.677{col 37}{space 1}   -2.21{col 46}{space 3}0.032{col 54}{space 4}-5847.804{col 67}{space 3}-273.3818
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-1332.784{col 26}{space 2} 1774.021{col 37}{space 1}   -0.75{col 46}{space 3}0.456{col 54}{space 4}-4903.702{col 67}{space 3} 2238.134
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-4316.015{col 26}{space 2} 2276.378{col 37}{space 1}   -1.90{col 46}{space 3}0.064{col 54}{space 4}-8898.126{col 67}{space 3} 266.0958
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11761.67{col 26}{space 2} 971.8385{col 37}{space 1}   12.10{col 46}{space 3}0.000{col 54}{space 4} 9805.459{col 67}{space 3} 13717.88
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Shopping"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 209,476)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       423
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}     13.28
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.9700
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.9656
+{txt}{col 49}Root MSE{col 67}= {res} 2769.3717
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  174.334{col 26}{space 2} 1623.507{col 37}{space 1}    0.11{col 46}{space 3}0.915{col 54}{space 4}-3093.615{col 67}{space 3} 3442.284
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-5747.758{col 26}{space 2} 1724.157{col 37}{space 1}   -3.33{col 46}{space 3}0.002{col 54}{space 4}-9218.306{col 67}{space 3} -2277.21
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-6234.539{col 26}{space 2} 1131.886{col 37}{space 1}   -5.51{col 46}{space 3}0.000{col 54}{space 4}-8512.907{col 67}{space 3}-3956.171
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-2908.251{col 26}{space 2} 1484.541{col 37}{space 1}   -1.96{col 46}{space 3}0.056{col 54}{space 4}-5896.477{col 67}{space 3} 79.97642
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-2221.399{col 26}{space 2} 722.4268{col 37}{space 1}   -3.07{col 46}{space 3}0.004{col 54}{space 4}-3675.569{col 67}{space 3}-767.2294
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-1249.261{col 26}{space 2} 899.2363{col 37}{space 1}   -1.39{col 46}{space 3}0.171{col 54}{space 4} -3059.33{col 67}{space 3} 560.8077
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-4378.173{col 26}{space 2} 1290.326{col 37}{space 1}   -3.39{col 46}{space 3}0.001{col 54}{space 4}-6975.464{col 67}{space 3}-1780.883
+{txt}{space 10}7  {c |}{col 14}{res}{space 2}-1623.971{col 26}{space 2} 992.2539{col 37}{space 1}   -1.64{col 46}{space 3}0.109{col 54}{space 4}-3621.274{col 67}{space 3} 373.3329
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 31025.81{col 26}{space 2} 1009.596{col 37}{space 1}   30.73{col 46}{space 3}0.000{col 54}{space 4}  28993.6{col 67}{space 3} 33058.02
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Others"
+{txt}(4,653 observations deleted)
+
+{com}. areg consumption project i.time_id [weight = answer], absorb(pref_id) vce(cluster pref_id)
+{txt}(analytic weights assumed)
+(sum of wgt is 2,490)
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}       316
+{txt}Absorbed variable: {bf:pref_id}{col 49}No. of categories{col 67}= {res}        47
+{txt}{col 49}F({res}   8{txt},{res}     46{txt}){col 67}= {res}      9.89
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.4815
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.3742
+{txt}{col 49}Root MSE{col 67}= {res} 2722.2395
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 2931.421{col 26}{space 2} 1458.366{col 37}{space 1}    2.01{col 46}{space 3}0.050{col 54}{space 4}-4.118048{col 67}{space 3} 5866.959
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2} 954.1149{col 26}{space 2} 943.6927{col 37}{space 1}    1.01{col 46}{space 3}0.317{col 54}{space 4}  -945.44{col 67}{space 3}  2853.67
+{txt}{space 10}2  {c |}{col 14}{res}{space 2}-966.9094{col 26}{space 2} 1064.102{col 37}{space 1}   -0.91{col 46}{space 3}0.368{col 54}{space 4}-3108.836{col 67}{space 3} 1175.017
+{txt}{space 10}3  {c |}{col 14}{res}{space 2} 156.8143{col 26}{space 2} 691.7364{col 37}{space 1}    0.23{col 46}{space 3}0.822{col 54}{space 4}-1235.579{col 67}{space 3} 1549.207
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-1218.942{col 26}{space 2} 914.5572{col 37}{space 1}   -1.33{col 46}{space 3}0.189{col 54}{space 4} -3059.85{col 67}{space 3} 621.9664
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}-938.2253{col 26}{space 2} 1016.839{col 37}{space 1}   -0.92{col 46}{space 3}0.361{col 54}{space 4}-2985.015{col 67}{space 3} 1108.565
+{txt}{space 10}6  {c |}{col 14}{res}{space 2}-114.2484{col 26}{space 2} 712.8458{col 37}{space 1}   -0.16{col 46}{space 3}0.873{col 54}{space 4}-1549.133{col 67}{space 3} 1320.636
+{txt}{space 10}7  {c |}{col 14}{res}{space 2} 300.3285{col 26}{space 2} 2535.948{col 37}{space 1}    0.12{col 46}{space 3}0.906{col 54}{space 4} -4804.27{col 67}{space 3} 5404.927
+{txt}{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2132.372{col 26}{space 2} 473.4041{col 37}{space 1}    4.50{col 46}{space 3}0.000{col 54}{space 4} 1179.459{col 67}{space 3} 3085.285
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. outreg2 using table10.tex, append
+{txt}{stata `"shellout using `"table10.tex"'"':table10.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table10.txt""':seeout}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. egen item_id = group(item)
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. egen item_id = group(item)
+{txt}
+{com}. reghdfe consumption project, absorb(time_id, pref_id, item_id)
+{res}{err}invalid 'item_id' 
+                 stata():  3598  Stata returned error
+         fixed_effects():     -  function returned error
+                 <istmt>:     -  function returned error
+{txt}{search r(3598), local:r(3598);}
+
+end of do-file
+
+{search r(3598), local:r(3598);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. egen item_id = group(item)
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. reghdfe consumption project, absorb(time_id, pref_id, item_id)
+{res}{err}invalid 'item_id' 
+                 stata():  3598  Stata returned error
+         fixed_effects():     -  function returned error
+                 <istmt>:     -  function returned error
+{txt}{search r(3598), local:r(3598);}
+
+end of do-file
+
+{search r(3598), local:r(3598);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. reghdfe consumption project, absorb(time_id pref_id item_id)
+{res}{txt}note: {res}project{txt} is probably collinear with the fixed effects (all partialled-out values are close to zero; tol = 1.0e-09)
+{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 2 iterations)
+{res}{txt}note: project omitted because of collinearity
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}     5,076
+{txt}Absorbing 3 HDFE groups{col 51}{help j_robustsingular##|_new:F(   0,   5010)}{col 67}=          {res}.
+{txt}{col 51}Prob > F{col 67}=          {res}.
+{txt}{col 51}R-squared{col 67}= {res}    0.7720
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.7691
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.0000
+{txt}{col 51}Root MSE{col 67}= {res}32821.0156
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2} 38615.62{col 26}{space 2} 460.6714{col 37}{space 1}   83.82{col 46}{space 3}0.000{col 54}{space 4}  37712.5{col 67}{space 3} 39518.74
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}     time_id{col 14}{c |}{space 1}        9{col 27}{space 1}        0{col 39}{result}{space 1}        9{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}     pref_id{col 14}{c |}{space 1}       47{col 27}{space 1}        1{col 39}{result}{space 1}       46{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}     item_id{col 14}{c |}{space 1}       12{col 27}{space 1}        1{col 39}{result}{space 1}       11{col 53}{text}?{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+? = number of redundant parameters may be higher
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. reghdfe consumption project, absorb(time_id pref_id item_id)
+{res}{txt}note: {res}project{txt} is probably collinear with the fixed effects (all partialled-out values are close to zero; tol = 1.0e-09)
+{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 2 iterations)
+{res}{txt}note: project omitted because of collinearity
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}     5,076
+{txt}Absorbing 3 HDFE groups{col 51}{help j_robustsingular##|_new:F(   0,   5010)}{col 67}=          {res}.
+{txt}{col 51}Prob > F{col 67}=          {res}.
+{txt}{col 51}R-squared{col 67}= {res}    0.7720
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.7691
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.0000
+{txt}{col 51}Root MSE{col 67}= {res}32821.0156
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2} 38615.62{col 26}{space 2} 460.6714{col 37}{space 1}   83.82{col 46}{space 3}0.000{col 54}{space 4}  37712.5{col 67}{space 3} 39518.74
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}     time_id{col 14}{c |}{space 1}        9{col 27}{space 1}        0{col 39}{result}{space 1}        9{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}     pref_id{col 14}{c |}{space 1}       47{col 27}{space 1}        1{col 39}{result}{space 1}       46{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}     item_id{col 14}{c |}{space 1}       12{col 27}{space 1}        1{col 39}{result}{space 1}       11{col 53}{text}?{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+? = number of redundant parameters may be higher
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. reghdfe consumption project, absorb(pref_id item_id)
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 2 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}     5,076
+{txt}Absorbing 2 HDFE groups{col 51}F({res}   1{txt},{res}   5017{txt}){col 67}= {res}      2.32
+{txt}{col 51}Prob > F{col 67}= {res}    0.1281
+{txt}{col 51}R-squared{col 67}= {res}    0.7688
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.7661
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.0005
+{txt}{col 51}Root MSE{col 67}= {res}33027.2242
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1697.024{col 26}{space 2} 1115.038{col 37}{space 1}    1.52{col 46}{space 3}0.128{col 54}{space 4}-488.9381{col 67}{space 3} 3882.986
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  38238.5{col 26}{space 2} 525.6341{col 37}{space 1}   72.75{col 46}{space 3}0.000{col 54}{space 4} 37208.03{col 67}{space 3} 39268.98
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}     pref_id{col 14}{c |}{space 1}       47{col 27}{space 1}        0{col 39}{result}{space 1}       47{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}     item_id{col 14}{c |}{space 1}       12{col 27}{space 1}        1{col 39}{result}{space 1}       11{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. reghdfe consumption project q2 q3 q4, absorb(pref_id item_id)
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 2 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}     5,076
+{txt}Absorbing 2 HDFE groups{col 51}F({res}   4{txt},{res}   5014{txt}){col 67}= {res}     10.11
+{txt}{col 51}Prob > F{col 67}= {res}    0.0000
+{txt}{col 51}R-squared{col 67}= {res}    0.7706
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.7678
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.0080
+{txt}{col 51}Root MSE{col 67}= {res}32912.2550
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 2105.484{col 26}{space 2} 1283.053{col 37}{space 1}    1.64{col 46}{space 3}0.101{col 54}{space 4}-409.8613{col 67}{space 3}  4620.83
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2}  6578.96{col 26}{space 2} 1335.444{col 37}{space 1}    4.93{col 46}{space 3}0.000{col 54}{space 4} 3960.906{col 67}{space 3} 9197.015
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 2863.854{col 26}{space 2} 1335.444{col 37}{space 1}    2.14{col 46}{space 3}0.032{col 54}{space 4} 245.7996{col 67}{space 3} 5481.909
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 6410.563{col 26}{space 2} 1283.053{col 37}{space 1}    5.00{col 46}{space 3}0.000{col 54}{space 4} 3895.218{col 67}{space 3} 8925.909
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 34624.76{col 26}{space 2} 907.2557{col 37}{space 1}   38.16{col 46}{space 3}0.000{col 54}{space 4} 32846.14{col 67}{space 3} 36403.38
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}     pref_id{col 14}{c |}{space 1}       47{col 27}{space 1}        0{col 39}{result}{space 1}       47{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}     item_id{col 14}{c |}{space 1}       12{col 27}{space 1}        1{col 39}{result}{space 1}       11{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. 
+. clear all
 {res}{txt}
 {com}. use main2
 {txt}
 {com}. 
 {txt}end of do-file
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD04193.000000"
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
 {txt}
-{com}. clear all 
+{com}. * clear all data in memory
+. clear all
 {res}{txt}
-{com}. use main2
+{com}. * load main dataset
+. use main
 {txt}
+{com}. keep if item == "Individual Package"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project, fe vce(cluster pref_id)
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.0009{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0006{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}1{txt},{res}46{txt}){col 67}={col 70}{res}     0.42
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.5209
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  6285.71{col 26}{space 2} 9717.296{col 37}{space 1}    0.65{col 46}{space 3}0.521{col 54}{space 4}-13274.19{col 67}{space 3} 25845.61
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 184598.8{col 26}{space 2} 2159.399{col 37}{space 1}   85.49{col 46}{space 3}0.000{col 54}{space 4} 180252.1{col 67}{space 3} 188945.4
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 59067.314
+     {txt}sigma_e {c |} {res} 91163.359
+         {txt}rho {c |} {res}  .2956809{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table3.tex, append
+{txt}{stata `"shellout using `"table3.tex"'"':table3.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table3.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Individual Package"
+{txt}(4,653 observations deleted)
+
+{com}. reghdfe consumption project, absorb(pref_id)
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 1 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}       423
+{txt}Absorbing 1 HDFE group{col 51}F({res}   1{txt},{res}    375{txt}){col 67}= {res}      0.35
+{txt}{col 51}Prob > F{col 67}= {res}    0.5558
+{txt}{col 51}R-squared{col 67}= {res}    0.3171
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.2315
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.0009
+{txt}{col 51}Root MSE{col 67}= {res}91163.3592
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2}  6285.71{col 26}{space 2} 10661.75{col 37}{space 1}    0.59{col 46}{space 3}0.556{col 54}{space 4} -14678.6{col 67}{space 3} 27250.02
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 184598.8{col 26}{space 2} 5025.999{col 37}{space 1}   36.73{col 46}{space 3}0.000{col 54}{space 4} 174716.1{col 67}{space 3} 194481.4
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}     pref_id{col 14}{c |}{space 1}       47{col 27}{space 1}        0{col 39}{result}{space 1}       47{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
 {com}. 
 {txt}end of do-file
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD04193.000000"
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
 {txt}
-{com}. clear all 
+{com}. clear all
+{res}{txt}
+{com}. use main
+{txt}
+{com}. keep if item == "Group Package"
+{txt}(4,653 observations deleted)
+
+{com}. xtset pref_id time_id
+{res}{txt}{col 8}panel variable:  {res}pref_id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption project q2 q3 q4 i.time_id, fe vce(cluster pref_id)
+{p 0 6 2}{txt}note: 5.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 6.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 7.time_id omitted because of collinearity{p_end}
+{p 0 6 2}note: 8.time_id omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}pref_id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1735{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0654{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}8{txt},{res}46{txt}){col 67}={col 70}{res}     5.29
+{txt}corr(u_i, Xb){col 16}= {res}0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0001
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:47} clusters in pref_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1} consumption{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}project {c |}{col 14}{res}{space 2} 1389.847{col 26}{space 2} 5936.095{col 37}{space 1}    0.23{col 46}{space 3}0.816{col 54}{space 4}-10558.89{col 67}{space 3} 13338.59
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 24293.41{col 26}{space 2} 7143.626{col 37}{space 1}    3.40{col 46}{space 3}0.001{col 54}{space 4}  9914.04{col 67}{space 3} 38672.79
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 1060.308{col 26}{space 2} 4111.335{col 37}{space 1}    0.26{col 46}{space 3}0.798{col 54}{space 4}-7215.379{col 67}{space 3} 9335.996
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 24345.04{col 26}{space 2} 7141.304{col 37}{space 1}    3.41{col 46}{space 3}0.001{col 54}{space 4} 9970.341{col 67}{space 3} 38719.74
+{txt}{space 12} {c |}
+{space 5}time_id {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-8219.799{col 26}{space 2} 6342.884{col 37}{space 1}   -1.30{col 46}{space 3}0.201{col 54}{space 4}-20987.36{col 67}{space 3} 4547.763
+{txt}{space 10}2  {c |}{col 14}{res}{space 2} 2548.222{col 26}{space 2} 4760.058{col 37}{space 1}    0.54{col 46}{space 3}0.595{col 54}{space 4}-7033.278{col 67}{space 3} 12129.72
+{txt}{space 10}3  {c |}{col 14}{res}{space 2}-5964.249{col 26}{space 2} 8606.988{col 37}{space 1}   -0.69{col 46}{space 3}0.492{col 54}{space 4}-23289.22{col 67}{space 3} 11360.72
+{txt}{space 10}4  {c |}{col 14}{res}{space 2}-14724.24{col 26}{space 2} 3535.522{col 37}{space 1}   -4.16{col 46}{space 3}0.000{col 54}{space 4}-21840.88{col 67}{space 3}-7607.604
+{txt}{space 10}5  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}6  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}7  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}8  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 135162.3{col 26}{space 2} 3578.992{col 37}{space 1}   37.77{col 46}{space 3}0.000{col 54}{space 4} 127958.2{col 67}{space 3} 142366.4
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 39492.599
+     {txt}sigma_e {c |} {res} 29628.799
+         {txt}rho {c |} {res} .63985455{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. outreg2 using table7.tex, replace
+{txt}{stata `"shellout using `"table7.tex"'"':table7.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "table7.txt""':seeout}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD42681.000000"
+{txt}
+{com}. 
+. clear all
 {res}{txt}
 {com}. use main2
 {txt}

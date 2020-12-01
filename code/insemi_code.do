@@ -7,6 +7,7 @@ DO-FILE FOR OKAMURO SEMINAR JUNIOR PROJECT
 
 * ########################### CREATION OF THE MAIN DATASET BEGIN ########################### *
 
+
 * preamble
 * delate all stored data
 clear all
@@ -374,7 +375,7 @@ clear all
 use main
 keep if item == "Group Package"
 xtset pref_id time_id
-xtreg consumption project q2 q3 q4 i.time_id, fe vce(cluster pref_id)
+xtreg consumption project q2 q3 q4, fe vce(cluster pref_id)
 outreg2 using table7.tex, replace
 
 clear all
@@ -515,6 +516,142 @@ drop if year == 2020
 xtset pref_id time_id
 xtreg cpc_stay_tourism project q2 q3 q4, fe vce(cluster pref_id)
 xtreg cpc_day_tourism project q2 q3 q4, fe vce(cluster pref_id)
+
+* ########################### ANALYSIS 5 END ########################### *
+
+* ########################### ANALYSIS 6 START ########################### *
+
+clear all
+use main2
+
+
+* ########################### ANALYSIS 6 END ########################### *
+
+clear all
+use main
+
+gen cashless_rate = 0
+replace cashless_rate = 24.1 if year == 2018
+replace cashless_rate = 25.7642 if year == 2019
+replace cashless_rate = 28.038 if year == 2020
+
+gen kousa = 0
+replace kousa = cashless_rate * project
+
+save main
+
+clear all
+use main
+keep if item == "Group Package"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table7.tex, replace
+
+clear all
+use main
+keep if item == "Individual Package"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table7.tex, append
+
+clear all
+use main
+keep if item == "Rouund-trip Air / Ship"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table7.tex, append
+
+clear all
+use main
+keep if item == "Accommodation"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, replace
+
+clear all
+use main
+keep if item == "Food"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Overall"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Train"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Bus/Taxi"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Transportation - Others"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Leisure"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Shopping"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+clear all
+use main
+keep if item == "Others"
+xtset pref_id time_id
+xtreg consumption project q2 q3 q4 cashless_rate kousa, fe vce(cluster pref_id)
+outreg2 using table8.tex, append
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+clear all
+capture log close
+cd "/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/code/data_new"
+use foreign
+
+reshape long 
+
+
+use foreign_wide
+
+
+
+
+
 
 
 

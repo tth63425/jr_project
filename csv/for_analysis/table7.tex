@@ -1,41 +1,29 @@
 \documentclass[]{article}
 \setlength{\pdfpagewidth}{8.5in} \setlength{\pdfpageheight}{11in}
 \begin{document}
-\begin{tabular}{lc} \hline
- & (1) \\
-VARIABLES & consumption \\ \hline
- &  \\
-project & 1,390 \\
- & (5,936) \\
-q2 & 24,293*** \\
- & (7,144) \\
-q3 & 1,060 \\
- & (4,111) \\
-q4 & 24,345*** \\
- & (7,141) \\
-1.time\_id & -8,220 \\
- & (6,343) \\
-2.time\_id & 2,548 \\
- & (4,760) \\
-3.time\_id & -5,964 \\
- & (8,607) \\
-4.time\_id & -14,724*** \\
- & (3,536) \\
-5o.time\_id & - \\
- &  \\
-6o.time\_id & - \\
- &  \\
-7o.time\_id & - \\
- &  \\
-8o.time\_id & - \\
- &  \\
-Constant & 135,162*** \\
- & (3,579) \\
- &  \\
-Observations & 423 \\
-Number of pref\_id & 47 \\
- R-squared & 0.173 \\ \hline
-\multicolumn{2}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{2}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
+\begin{tabular}{lccc} \hline
+ & (1) & (2) & (3) \\
+VARIABLES & consumption & consumption & consumption \\ \hline
+ &  &  &  \\
+project & -35,088 & -849,678*** & -4,288 \\
+ & (104,269) & (300,630) & (31,148) \\
+q2 & 27,546*** & 72,985*** & 3,933*** \\
+ & (5,397) & (12,139) & (1,159) \\
+q3 & 9,697*** & 37,436*** & 8,332*** \\
+ & (3,528) & (10,559) & (1,264) \\
+q4 & 24,234*** & 109,029*** & -1,216 \\
+ & (6,553) & (15,519) & (1,122) \\
+cashless\_rate & -1,813 & 16,070*** & -2,239*** \\
+ & (2,004) & (5,349) & (570.2) \\
+kousa & 1,764 & 30,297** & 447.2 \\
+ & (3,843) & (11,339) & (1,154) \\
+Constant & 173,007*** & -261,266* & 114,318*** \\
+ & (50,603) & (135,343) & (14,146) \\
+ &  &  &  \\
+Observations & 423 & 423 & 423 \\
+R-squared & 0.158 & 0.142 & 0.153 \\
+ Number of pref\_id & 47 & 47 & 47 \\ \hline
+\multicolumn{4}{c}{ Robust standard errors in parentheses} \\
+\multicolumn{4}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
 \end{tabular}
 \end{document}

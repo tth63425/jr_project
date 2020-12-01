@@ -3,34 +3,1431 @@
       name:  {res}<unnamed>
        {txt}log:  {res}/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis/stataoutput.smcl
   {txt}log type:  {res}smcl
- {txt}opened on:  {res}18 Oct 2020, 09:29:07
+ {txt}opened on:  {res}11 Nov 2020, 23:30:35
 {txt}
 {com}. 
-. /*
-> * import csv file
-> import delimited foreign_raw.csv
-> 
-> * create new dummy varables for quarters
-> gen q2 = 0
-> gen q3 = 0
-
-{txt}end of do-file
-
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+. use ketsugou_insemi
 {txt}
-{com}. clear all 
-{res}{txt}
-{com}. use main
+{com}. 
+. 
+. * ########################### CREATION OF THE MAIN DATASET BEGIN ########################### *
+. * create a new variable for time index
+. generate time_id =0
 {txt}
+{com}. replace time_id = 1 if year==2018&quarter==2
+{txt}(94 real changes made)
+
+{com}. replace time_id = 2 if year==2018&quarter==3
+{txt}(94 real changes made)
+
+{com}. replace time_id = 3 if year==2018&quarter==4
+{txt}(94 real changes made)
+
+{com}. replace time_id = 4 if year==2019&quarter==1
+{txt}(94 real changes made)
+
+{com}. replace time_id = 5 if year==2019&quarter==2
+{txt}(94 real changes made)
+
+{com}. replace time_id = 6 if year==2019&quarter==3
+{txt}(94 real changes made)
+
+{com}. replace time_id = 7 if year==2019&quarter==4
+{txt}(94 real changes made)
+
+{com}. replace time_id = 8 if year==2020&quarter==1
+{txt}(94 real changes made)
+
+{com}. * create new dummy varables for quarters
+. generate q2=0
+{txt}
+{com}. generate q3=0
+{txt}
+{com}. generate q4=0
+{txt}
+{com}. replace q2=1 if quarter==2
+{txt}(188 real changes made)
+
+{com}. replace q3=1 if quarter==3
+{txt}(188 real changes made)
+
+{com}. replace q4=1 if quarter==4
+{txt}(188 real changes made)
+
+{com}. * create a new variable for prefecture id
+. egen pref_id=group(pref)
+{txt}
+{com}. * creater a new dummy variable for cashless-point refund project
+. generate project=0
+{txt}
+{com}. replace project=1 if year==2019&quarter==4
+{txt}(94 real changes made)
+
+{com}. replace project=1 if year==2020&quarter==1
+{txt}(94 real changes made)
+
+{com}. save newmain3
+{txt}file newmain3.dta saved
+
 {com}. 
 {txt}end of do-file
 
-{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD86949.000000"
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
 {txt}
 {com}. clear all
 {res}{txt}
-{com}. use main2
+{com}. use newmain3
 {txt}
+{com}. 
+. keep if foreign == 1
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic1.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         211    122.2538          0        422
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423     30464.9    20565.31   3552.615   130665.7
+{txt}{space 5}foreign {c |}{res}        423           1           0          1          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    49.60049    1.361118    46.8007    51.2517
+{txt}{space 2}total_stay {c |}{res}        423    5.052487    4.040021      .2859    25.8791
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic1.tex"'"':basic1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic1.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use newmain
+{txt}
+{com}. keep if foreign == 0
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic2.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         634    122.2538        423        845
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423    70146.95    97050.96   2569.071     807293
+{txt}{space 5}foreign {c |}{res}        423           0           0          0          0
+{txt}{hline 13}{c +}{hline 57}
+{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{hline 13}{c +}{hline 57}
+{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  Following variable has no observation, not included:  
+number  
+{txt}{stata `"shellout using `"basic2.tex"'"':basic2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic2.txt""':seeout}
+
+{com}. 
+. 
+. * idの割り振り直し
+. egen id = group(pref_id foreign)
+{txt}
+{com}. 
+. gen cross_term = 0
+{txt}
+{com}. replace cross_term = 1 if project == 1 & foreign == 1
+{txt}(0 real changes made)
+
+{com}. 
+. 
+. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project, fe
+{p 0 6 2}{txt}note: cross_term omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1614{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.0939{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}1{txt},{res}375{txt}){col 67}={col 70}{res}    72.18
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  8410.89{col 37}{space 1}    8.50{col 46}{space 3}0.000{col 54}{space 4} 54920.31{col 67}{space 3} 87997.14
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 54267.23{col 26}{space 2} 3964.932{col 37}{space 1}   13.69{col 46}{space 3}0.000{col 54}{space 4} 46470.94{col 67}{space 3} 62063.52
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 63358.145
+     {txt}sigma_e {c |} {res} 71917.345
+         {txt}rho {c |} {res} .43697993{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}46{txt}, {res}375{txt}) = {res}6.99{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4, fe
+{p 0 6 2}{txt}note: cross_term omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       423
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        47
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.3430{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}     .{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1996{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}4{txt},{res}372{txt}){col 67}={col 70}{res}    48.54
+{txt}corr(u_i, Xb){col 16}= {res}-0.0000{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 5}project {c |}{col 14}{res}{space 2} 68257.82{col 26}{space 2} 8631.317{col 37}{space 1}    7.91{col 46}{space 3}0.000{col 54}{space 4} 51285.53{col 67}{space 3} 85230.11
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 36873.76{col 26}{space 2} 8983.759{col 37}{space 1}    4.10{col 46}{space 3}0.000{col 54}{space 4} 19208.44{col 67}{space 3} 54539.08
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 55430.85{col 26}{space 2} 8983.759{col 37}{space 1}    6.17{col 46}{space 3}0.000{col 54}{space 4} 37765.53{col 67}{space 3} 73096.16
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 82806.23{col 26}{space 2} 8631.317{col 37}{space 1}    9.59{col 46}{space 3}0.000{col 54}{space 4} 65833.94{col 67}{space 3} 99778.52
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 16065.02{col 26}{space 2} 6103.263{col 37}{space 1}    2.63{col 46}{space 3}0.009{col 54}{space 4} 4063.804{col 67}{space 3} 28066.25
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 63358.145
+     {txt}sigma_e {c |} {res} 63914.497
+         {txt}rho {c |} {res} .49562874{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}46{txt}, {res}372{txt}) = {res}8.84{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate, fe
+{err}variable {bf}female_rate{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. 
+. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. 
+. keep if foreign == 1
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic1.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         211    122.2538          0        422
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423     30464.9    20565.31   3552.615   130665.7
+{txt}{space 5}foreign {c |}{res}        423           1           0          1          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    49.60049    1.361118    46.8007    51.2517
+{txt}{space 2}total_stay {c |}{res}        423    5.052487    4.040021      .2859    25.8791
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic1.tex"'"':basic1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic1.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. keep if foreign == 0
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic2.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         634    122.2538        423        845
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423    70146.95    97050.96   2569.071     807293
+{txt}{space 5}foreign {c |}{res}        423           0           0          0          0
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    52.52457    .4399651   51.92395   53.40121
+{txt}{space 2}total_stay {c |}{res}        423    1.668534    .1866942       1.34       3.11
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic2.tex"'"':basic2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic2.txt""':seeout}
+
+{com}. 
+. clear all 
+{res}{txt}
+{com}. use newmain2
+{txt}
+{com}. 
+. * idの割り振り直し
+. egen id = group(pref_id foreign)
+{txt}
+{com}. 
+. gen cross_term = 0
+{txt}
+{com}. replace cross_term = 1 if project == 1 & foreign == 1
+{txt}(94 real changes made)
+
+{com}. 
+. 
+. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1603{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1320{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}2{txt},{res}750{txt}){col 67}={col 70}{res}    71.57
+{txt}corr(u_i, Xb){col 16}= {res}0.0862{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8462.908{col 37}{space 1}   -7.92{col 46}{space 3}0.000{col 54}{space 4}-83665.87{col 67}{space 3}-50438.25
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  5984.18{col 37}{space 1}   11.94{col 46}{space 3}0.000{col 54}{space 4} 59710.99{col 67}{space 3} 83206.46
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 41876.43{col 26}{space 2} 1994.727{col 37}{space 1}   20.99{col 46}{space 3}0.000{col 54}{space 4} 37960.52{col 67}{space 3} 45792.34
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res} 51167.748
+         {txt}rho {c |} {res} .47018982{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}750{txt}) = {res}7.87{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2370{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1711{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}5{txt},{res}747{txt}){col 67}={col 70}{res}    46.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0722{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8083.175{col 37}{space 1}   -8.30{col 46}{space 3}0.000{col 54}{space 4} -82920.5{col 67}{space 3}-51183.62
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 69144.69{col 26}{space 2} 6173.627{col 37}{space 1}   11.20{col 46}{space 3}0.000{col 54}{space 4} 57024.97{col 67}{space 3} 81264.42
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 14739.15{col 26}{space 2} 4857.384{col 37}{space 1}    3.03{col 46}{space 3}0.002{col 54}{space 4} 5203.401{col 67}{space 3}  24274.9
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 25082.17{col 26}{space 2} 4857.384{col 37}{space 1}    5.16{col 46}{space 3}0.000{col 54}{space 4} 15546.42{col 67}{space 3} 34617.91
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 38336.35{col 26}{space 2} 4666.823{col 37}{space 1}    8.21{col 46}{space 3}0.000{col 54}{space 4}  29174.7{col 67}{space 3}    47498
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 25022.29{col 26}{space 2} 3299.942{col 37}{space 1}    7.58{col 46}{space 3}0.000{col 54}{space 4} 18544.03{col 67}{space 3} 31500.56
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res}  48871.84
+         {txt}rho {c |} {res} .49310889{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}747{txt}) = {res}8.63{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate, fe
+{err}variable {bf}female_rate{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. 
+. 
+. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. 
+. keep if foreign == 1
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic1.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         211    122.2538          0        422
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423     30464.9    20565.31   3552.615   130665.7
+{txt}{space 5}foreign {c |}{res}        423           1           0          1          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    49.60049    1.361118    46.8007    51.2517
+{txt}{space 2}total_stay {c |}{res}        423    5.052487    4.040021      .2859    25.8791
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic1.tex"'"':basic1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic1.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. keep if foreign == 0
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic2.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         634    122.2538        423        845
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423    70146.95    97050.96   2569.071     807293
+{txt}{space 5}foreign {c |}{res}        423           0           0          0          0
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    52.52457    .4399651   51.92395   53.40121
+{txt}{space 2}total_stay {c |}{res}        423    1.668534    .1866942       1.34       3.11
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic2.tex"'"':basic2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic2.txt""':seeout}
+
+{com}. 
+. clear all 
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. 
+. * idの割り振り直し
+. egen id = group(pref_id foreign)
+{txt}
+{com}. 
+. gen cross_term = 0
+{txt}
+{com}. replace cross_term = 1 if project == 1 & foreign == 1
+{txt}(94 real changes made)
+
+{com}. 
+. 
+. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1603{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1320{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}2{txt},{res}750{txt}){col 67}={col 70}{res}    71.57
+{txt}corr(u_i, Xb){col 16}= {res}0.0862{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8462.908{col 37}{space 1}   -7.92{col 46}{space 3}0.000{col 54}{space 4}-83665.87{col 67}{space 3}-50438.25
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  5984.18{col 37}{space 1}   11.94{col 46}{space 3}0.000{col 54}{space 4} 59710.99{col 67}{space 3} 83206.46
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 41876.43{col 26}{space 2} 1994.727{col 37}{space 1}   20.99{col 46}{space 3}0.000{col 54}{space 4} 37960.52{col 67}{space 3} 45792.34
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res} 51167.748
+         {txt}rho {c |} {res} .47018982{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}750{txt}) = {res}7.87{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2370{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1711{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}5{txt},{res}747{txt}){col 67}={col 70}{res}    46.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0722{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8083.175{col 37}{space 1}   -8.30{col 46}{space 3}0.000{col 54}{space 4} -82920.5{col 67}{space 3}-51183.62
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 69144.69{col 26}{space 2} 6173.627{col 37}{space 1}   11.20{col 46}{space 3}0.000{col 54}{space 4} 57024.97{col 67}{space 3} 81264.42
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 14739.15{col 26}{space 2} 4857.384{col 37}{space 1}    3.03{col 46}{space 3}0.002{col 54}{space 4} 5203.401{col 67}{space 3}  24274.9
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 25082.17{col 26}{space 2} 4857.384{col 37}{space 1}    5.16{col 46}{space 3}0.000{col 54}{space 4} 15546.42{col 67}{space 3} 34617.91
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 38336.35{col 26}{space 2} 4666.823{col 37}{space 1}    8.21{col 46}{space 3}0.000{col 54}{space 4}  29174.7{col 67}{space 3}    47498
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 25022.29{col 26}{space 2} 3299.942{col 37}{space 1}    7.58{col 46}{space 3}0.000{col 54}{space 4} 18544.03{col 67}{space 3} 31500.56
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res}  48871.84
+         {txt}rho {c |} {res} .49310889{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}747{txt}) = {res}8.63{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2463{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1134{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    40.63
+{txt}corr(u_i, Xb){col 16}= {res}-0.0321{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81695.25{col 26}{space 2}  9378.36{col 37}{space 1}   -8.71{col 46}{space 3}0.000{col 54}{space 4}-100106.4{col 67}{space 3}-63284.13
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 70410.43{col 26}{space 2} 6154.223{col 37}{space 1}   11.44{col 46}{space 3}0.000{col 54}{space 4} 58328.77{col 67}{space 3} 82492.08
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 24186.65{col 26}{space 2} 5748.681{col 37}{space 1}    4.21{col 46}{space 3}0.000{col 54}{space 4} 12901.14{col 67}{space 3} 35472.17
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}  29118.3{col 26}{space 2} 5011.014{col 37}{space 1}    5.81{col 46}{space 3}0.000{col 54}{space 4} 19280.93{col 67}{space 3} 38955.67
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 46391.36{col 26}{space 2} 5347.981{col 37}{space 1}    8.67{col 46}{space 3}0.000{col 54}{space 4} 35892.47{col 67}{space 3} 56890.24
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-7556.526{col 26}{space 2} 2492.269{col 37}{space 1}   -3.03{col 46}{space 3}0.003{col 54}{space 4}-12449.22{col 67}{space 3} -2663.83
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   407437{col 26}{space 2} 126169.5{col 37}{space 1}    3.23{col 46}{space 3}0.001{col 54}{space 4} 159747.5{col 67}{space 3} 655126.5
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51470.381
+     {txt}sigma_e {c |} {res} 48606.017
+         {txt}rho {c |} {res} .52859835{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.65{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 total_stay, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2432{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0999{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1569{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    39.95
+{txt}corr(u_i, Xb){col 16}= {res}0.0458{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-70542.82{col 26}{space 2} 8178.791{col 37}{space 1}   -8.63{col 46}{space 3}0.000{col 54}{space 4}   -86599{col 67}{space 3}-54486.63
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 68355.59{col 26}{space 2} 6160.955{col 37}{space 1}   11.09{col 46}{space 3}0.000{col 54}{space 4} 56260.72{col 67}{space 3} 80450.46
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 16165.59{col 26}{space 2} 4875.225{col 37}{space 1}    3.32{col 46}{space 3}0.001{col 54}{space 4} 6594.793{col 67}{space 3} 25736.38
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24848.76{col 26}{space 2} 4841.812{col 37}{space 1}    5.13{col 46}{space 3}0.000{col 54}{space 4} 15343.56{col 67}{space 3} 34353.96
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}  41349.9{col 26}{space 2} 4808.385{col 37}{space 1}    8.60{col 46}{space 3}0.000{col 54}{space 4} 31910.33{col 67}{space 3} 50789.48
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 2159.888{col 26}{space 2} 874.5753{col 37}{space 1}    2.47{col 46}{space 3}0.014{col 54}{space 4} 442.9659{col 67}{space 3} 3876.809
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 17392.39{col 26}{space 2}  4512.28{col 37}{space 1}    3.85{col 46}{space 3}0.000{col 54}{space 4} 8534.112{col 67}{space 3} 26250.67
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 49088.172
+     {txt}sigma_e {c |} {res} 48705.886
+         {txt}rho {c |} {res} .50390903{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.75{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate total_stay, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2492{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0496{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1101{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}7{txt},{res}745{txt}){col 67}={col 70}{res}    35.33
+{txt}corr(u_i, Xb){col 16}= {res}-0.0468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81849.01{col 26}{space 2} 9366.695{col 37}{space 1}   -8.74{col 46}{space 3}0.000{col 54}{space 4}-100237.3{col 67}{space 3}-63460.75
+{txt}{space 5}project {c |}{col 14}{res}{space 2}  69640.4{col 26}{space 2} 6162.736{col 37}{space 1}   11.30{col 46}{space 3}0.000{col 54}{space 4} 57542.01{col 67}{space 3}  81738.8
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 23692.91{col 26}{space 2} 5748.512{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4}  12407.7{col 67}{space 3} 34978.12
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 28302.16{col 26}{space 2} 5027.226{col 37}{space 1}    5.63{col 46}{space 3}0.000{col 54}{space 4} 18432.95{col 67}{space 3} 38171.38
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 47261.05{col 26}{space 2}  5365.21{col 37}{space 1}    8.81{col 46}{space 3}0.000{col 54}{space 4} 36728.32{col 67}{space 3} 57793.78
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-6342.332{col 26}{space 2}  2588.22{col 37}{space 1}   -2.45{col 46}{space 3}0.014{col 54}{space 4} -11423.4{col 67}{space 3} -1261.26
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 1550.977{col 26}{space 2} 906.3835{col 37}{space 1}    1.71{col 46}{space 3}0.087{col 54}{space 4}-228.3923{col 67}{space 3} 3330.347
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 340511.1{col 26}{space 2}   131937{col 37}{space 1}    2.58{col 46}{space 3}0.010{col 54}{space 4} 81498.49{col 67}{space 3} 599523.8
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51751.093
+     {txt}sigma_e {c |} {res} 48543.325
+         {txt}rho {c |} {res} .53195084{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}745{txt}) = {res}8.66{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. 
+. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. 
+. keep if foreign == 1
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic1.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         211    122.2538          0        422
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423     30464.9    20565.31   3552.615   130665.7
+{txt}{space 5}foreign {c |}{res}        423           1           0          1          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    49.60049    1.361118    46.8007    51.2517
+{txt}{space 2}total_stay {c |}{res}        423    5.052487    4.040021      .2859    25.8791
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic1.tex"'"':basic1.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic1.txt""':seeout}
+
+{com}. 
+. clear all
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. keep if foreign == 0
+{txt}(423 observations deleted)
+
+{com}. outreg2 using basic2.tex, replace sum(log)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}index {c |}{res}        423         634    122.2538        423        845
+{txt}{space 8}year {c |}{res}        423    2018.667    .6674561       2018       2020
+{txt}{space 5}quarter {c |}{res}        423    2.333333    1.156068          1          4
+{txt}consumptio~m {c |}{res}        423    70146.95    97050.96   2569.071     807293
+{txt}{space 5}foreign {c |}{res}        423           0           0          0          0
+{txt}{hline 13}{c +}{hline 57}
+{space 1}female_rate {c |}{res}        423    52.52457    .4399651   51.92395   53.40121
+{txt}{space 2}total_stay {c |}{res}        423    1.668534    .1866942       1.34       3.11
+{txt}{space 5}time_id {c |}{res}        423           4    2.585046          0          8
+{txt}{space 10}q2 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 10}q3 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 10}q4 {c |}{res}        423    .2222222     .416232          0          1
+{txt}{space 5}pref_id {c |}{res}        423          24    13.58072          1         47
+{txt}{space 5}project {c |}{res}        423    .2222222     .416232          0          1
+
+Following variable is string, not included:  
+pref  
+{txt}{stata `"shellout using `"basic2.tex"'"':basic2.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "basic2.txt""':seeout}
+
+{com}. 
+. clear all 
+{res}{txt}
+{com}. use newmain3
+{txt}
+{com}. 
+. * idの割り振り直し
+. egen id = group(pref_id foreign)
+{txt}
+{com}. 
+. gen cross_term = 0
+{txt}
+{com}. replace cross_term = 1 if project == 1 & foreign == 1
+{txt}(94 real changes made)
+
+{com}. 
+. 
+. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1603{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1320{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}2{txt},{res}750{txt}){col 67}={col 70}{res}    71.57
+{txt}corr(u_i, Xb){col 16}= {res}0.0862{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8462.908{col 37}{space 1}   -7.92{col 46}{space 3}0.000{col 54}{space 4}-83665.87{col 67}{space 3}-50438.25
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  5984.18{col 37}{space 1}   11.94{col 46}{space 3}0.000{col 54}{space 4} 59710.99{col 67}{space 3} 83206.46
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 41876.43{col 26}{space 2} 1994.727{col 37}{space 1}   20.99{col 46}{space 3}0.000{col 54}{space 4} 37960.52{col 67}{space 3} 45792.34
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res} 51167.748
+         {txt}rho {c |} {res} .47018982{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}750{txt}) = {res}7.87{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, replace
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2370{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1711{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}5{txt},{res}747{txt}){col 67}={col 70}{res}    46.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0722{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8083.175{col 37}{space 1}   -8.30{col 46}{space 3}0.000{col 54}{space 4} -82920.5{col 67}{space 3}-51183.62
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 69144.69{col 26}{space 2} 6173.627{col 37}{space 1}   11.20{col 46}{space 3}0.000{col 54}{space 4} 57024.97{col 67}{space 3} 81264.42
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 14739.15{col 26}{space 2} 4857.384{col 37}{space 1}    3.03{col 46}{space 3}0.002{col 54}{space 4} 5203.401{col 67}{space 3}  24274.9
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 25082.17{col 26}{space 2} 4857.384{col 37}{space 1}    5.16{col 46}{space 3}0.000{col 54}{space 4} 15546.42{col 67}{space 3} 34617.91
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 38336.35{col 26}{space 2} 4666.823{col 37}{space 1}    8.21{col 46}{space 3}0.000{col 54}{space 4}  29174.7{col 67}{space 3}    47498
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 25022.29{col 26}{space 2} 3299.942{col 37}{space 1}    7.58{col 46}{space 3}0.000{col 54}{space 4} 18544.03{col 67}{space 3} 31500.56
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res}  48871.84
+         {txt}rho {c |} {res} .49310889{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}747{txt}) = {res}8.63{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2463{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1134{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    40.63
+{txt}corr(u_i, Xb){col 16}= {res}-0.0321{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81695.25{col 26}{space 2}  9378.36{col 37}{space 1}   -8.71{col 46}{space 3}0.000{col 54}{space 4}-100106.4{col 67}{space 3}-63284.13
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 70410.43{col 26}{space 2} 6154.223{col 37}{space 1}   11.44{col 46}{space 3}0.000{col 54}{space 4} 58328.77{col 67}{space 3} 82492.08
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 24186.65{col 26}{space 2} 5748.681{col 37}{space 1}    4.21{col 46}{space 3}0.000{col 54}{space 4} 12901.14{col 67}{space 3} 35472.17
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}  29118.3{col 26}{space 2} 5011.014{col 37}{space 1}    5.81{col 46}{space 3}0.000{col 54}{space 4} 19280.93{col 67}{space 3} 38955.67
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 46391.36{col 26}{space 2} 5347.981{col 37}{space 1}    8.67{col 46}{space 3}0.000{col 54}{space 4} 35892.47{col 67}{space 3} 56890.24
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-7556.526{col 26}{space 2} 2492.269{col 37}{space 1}   -3.03{col 46}{space 3}0.003{col 54}{space 4}-12449.22{col 67}{space 3} -2663.83
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   407437{col 26}{space 2} 126169.5{col 37}{space 1}    3.23{col 46}{space 3}0.001{col 54}{space 4} 159747.5{col 67}{space 3} 655126.5
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51470.381
+     {txt}sigma_e {c |} {res} 48606.017
+         {txt}rho {c |} {res} .52859835{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.65{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 total_stay, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2432{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0999{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1569{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    39.95
+{txt}corr(u_i, Xb){col 16}= {res}0.0458{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-70542.82{col 26}{space 2} 8178.791{col 37}{space 1}   -8.63{col 46}{space 3}0.000{col 54}{space 4}   -86599{col 67}{space 3}-54486.63
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 68355.59{col 26}{space 2} 6160.955{col 37}{space 1}   11.09{col 46}{space 3}0.000{col 54}{space 4} 56260.72{col 67}{space 3} 80450.46
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 16165.59{col 26}{space 2} 4875.225{col 37}{space 1}    3.32{col 46}{space 3}0.001{col 54}{space 4} 6594.793{col 67}{space 3} 25736.38
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24848.76{col 26}{space 2} 4841.812{col 37}{space 1}    5.13{col 46}{space 3}0.000{col 54}{space 4} 15343.56{col 67}{space 3} 34353.96
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}  41349.9{col 26}{space 2} 4808.385{col 37}{space 1}    8.60{col 46}{space 3}0.000{col 54}{space 4} 31910.33{col 67}{space 3} 50789.48
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 2159.888{col 26}{space 2} 874.5753{col 37}{space 1}    2.47{col 46}{space 3}0.014{col 54}{space 4} 442.9659{col 67}{space 3} 3876.809
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 17392.39{col 26}{space 2}  4512.28{col 37}{space 1}    3.85{col 46}{space 3}0.000{col 54}{space 4} 8534.112{col 67}{space 3} 26250.67
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 49088.172
+     {txt}sigma_e {c |} {res} 48705.886
+         {txt}rho {c |} {res} .50390903{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.75{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate total_stay, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2492{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0496{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1101{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}7{txt},{res}745{txt}){col 67}={col 70}{res}    35.33
+{txt}corr(u_i, Xb){col 16}= {res}-0.0468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81849.01{col 26}{space 2} 9366.695{col 37}{space 1}   -8.74{col 46}{space 3}0.000{col 54}{space 4}-100237.3{col 67}{space 3}-63460.75
+{txt}{space 5}project {c |}{col 14}{res}{space 2}  69640.4{col 26}{space 2} 6162.736{col 37}{space 1}   11.30{col 46}{space 3}0.000{col 54}{space 4} 57542.01{col 67}{space 3}  81738.8
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 23692.91{col 26}{space 2} 5748.512{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4}  12407.7{col 67}{space 3} 34978.12
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 28302.16{col 26}{space 2} 5027.226{col 37}{space 1}    5.63{col 46}{space 3}0.000{col 54}{space 4} 18432.95{col 67}{space 3} 38171.38
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 47261.05{col 26}{space 2}  5365.21{col 37}{space 1}    8.81{col 46}{space 3}0.000{col 54}{space 4} 36728.32{col 67}{space 3} 57793.78
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-6342.332{col 26}{space 2}  2588.22{col 37}{space 1}   -2.45{col 46}{space 3}0.014{col 54}{space 4} -11423.4{col 67}{space 3} -1261.26
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 1550.977{col 26}{space 2} 906.3835{col 37}{space 1}    1.71{col 46}{space 3}0.087{col 54}{space 4}-228.3923{col 67}{space 3} 3330.347
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 340511.1{col 26}{space 2}   131937{col 37}{space 1}    2.58{col 46}{space 3}0.010{col 54}{space 4} 81498.49{col 67}{space 3} 599523.8
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51751.093
+     {txt}sigma_e {c |} {res} 48543.325
+         {txt}rho {c |} {res} .53195084{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}745{txt}) = {res}8.66{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1603{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1320{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}2{txt},{res}750{txt}){col 67}={col 70}{res}    71.57
+{txt}corr(u_i, Xb){col 16}= {res}0.0862{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8462.908{col 37}{space 1}   -7.92{col 46}{space 3}0.000{col 54}{space 4}-83665.87{col 67}{space 3}-50438.25
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  5984.18{col 37}{space 1}   11.94{col 46}{space 3}0.000{col 54}{space 4} 59710.99{col 67}{space 3} 83206.46
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 41876.43{col 26}{space 2} 1994.727{col 37}{space 1}   20.99{col 46}{space 3}0.000{col 54}{space 4} 37960.52{col 67}{space 3} 45792.34
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res} 51167.748
+         {txt}rho {c |} {res} .47018982{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}750{txt}) = {res}7.87{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, replace
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2370{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1711{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}5{txt},{res}747{txt}){col 67}={col 70}{res}    46.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0722{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8083.175{col 37}{space 1}   -8.30{col 46}{space 3}0.000{col 54}{space 4} -82920.5{col 67}{space 3}-51183.62
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 69144.69{col 26}{space 2} 6173.627{col 37}{space 1}   11.20{col 46}{space 3}0.000{col 54}{space 4} 57024.97{col 67}{space 3} 81264.42
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 14739.15{col 26}{space 2} 4857.384{col 37}{space 1}    3.03{col 46}{space 3}0.002{col 54}{space 4} 5203.401{col 67}{space 3}  24274.9
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 25082.17{col 26}{space 2} 4857.384{col 37}{space 1}    5.16{col 46}{space 3}0.000{col 54}{space 4} 15546.42{col 67}{space 3} 34617.91
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 38336.35{col 26}{space 2} 4666.823{col 37}{space 1}    8.21{col 46}{space 3}0.000{col 54}{space 4}  29174.7{col 67}{space 3}    47498
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 25022.29{col 26}{space 2} 3299.942{col 37}{space 1}    7.58{col 46}{space 3}0.000{col 54}{space 4} 18544.03{col 67}{space 3} 31500.56
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res}  48871.84
+         {txt}rho {c |} {res} .49310889{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}747{txt}) = {res}8.63{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2463{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1134{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    40.63
+{txt}corr(u_i, Xb){col 16}= {res}-0.0321{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81695.25{col 26}{space 2}  9378.36{col 37}{space 1}   -8.71{col 46}{space 3}0.000{col 54}{space 4}-100106.4{col 67}{space 3}-63284.13
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 70410.43{col 26}{space 2} 6154.223{col 37}{space 1}   11.44{col 46}{space 3}0.000{col 54}{space 4} 58328.77{col 67}{space 3} 82492.08
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 24186.65{col 26}{space 2} 5748.681{col 37}{space 1}    4.21{col 46}{space 3}0.000{col 54}{space 4} 12901.14{col 67}{space 3} 35472.17
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}  29118.3{col 26}{space 2} 5011.014{col 37}{space 1}    5.81{col 46}{space 3}0.000{col 54}{space 4} 19280.93{col 67}{space 3} 38955.67
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 46391.36{col 26}{space 2} 5347.981{col 37}{space 1}    8.67{col 46}{space 3}0.000{col 54}{space 4} 35892.47{col 67}{space 3} 56890.24
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-7556.526{col 26}{space 2} 2492.269{col 37}{space 1}   -3.03{col 46}{space 3}0.003{col 54}{space 4}-12449.22{col 67}{space 3} -2663.83
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   407437{col 26}{space 2} 126169.5{col 37}{space 1}    3.23{col 46}{space 3}0.001{col 54}{space 4} 159747.5{col 67}{space 3} 655126.5
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51470.381
+     {txt}sigma_e {c |} {res} 48606.017
+         {txt}rho {c |} {res} .52859835{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.65{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 total_stay, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2432{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0999{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1569{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    39.95
+{txt}corr(u_i, Xb){col 16}= {res}0.0458{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-70542.82{col 26}{space 2} 8178.791{col 37}{space 1}   -8.63{col 46}{space 3}0.000{col 54}{space 4}   -86599{col 67}{space 3}-54486.63
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 68355.59{col 26}{space 2} 6160.955{col 37}{space 1}   11.09{col 46}{space 3}0.000{col 54}{space 4} 56260.72{col 67}{space 3} 80450.46
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 16165.59{col 26}{space 2} 4875.225{col 37}{space 1}    3.32{col 46}{space 3}0.001{col 54}{space 4} 6594.793{col 67}{space 3} 25736.38
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24848.76{col 26}{space 2} 4841.812{col 37}{space 1}    5.13{col 46}{space 3}0.000{col 54}{space 4} 15343.56{col 67}{space 3} 34353.96
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}  41349.9{col 26}{space 2} 4808.385{col 37}{space 1}    8.60{col 46}{space 3}0.000{col 54}{space 4} 31910.33{col 67}{space 3} 50789.48
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 2159.888{col 26}{space 2} 874.5753{col 37}{space 1}    2.47{col 46}{space 3}0.014{col 54}{space 4} 442.9659{col 67}{space 3} 3876.809
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 17392.39{col 26}{space 2}  4512.28{col 37}{space 1}    3.85{col 46}{space 3}0.000{col 54}{space 4} 8534.112{col 67}{space 3} 26250.67
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 49088.172
+     {txt}sigma_e {c |} {res} 48705.886
+         {txt}rho {c |} {res} .50390903{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.75{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project q2 q3 q4 female_rate total_stay, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2492{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0496{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1101{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}7{txt},{res}745{txt}){col 67}={col 70}{res}    35.33
+{txt}corr(u_i, Xb){col 16}= {res}-0.0468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81849.01{col 26}{space 2} 9366.695{col 37}{space 1}   -8.74{col 46}{space 3}0.000{col 54}{space 4}-100237.3{col 67}{space 3}-63460.75
+{txt}{space 5}project {c |}{col 14}{res}{space 2}  69640.4{col 26}{space 2} 6162.736{col 37}{space 1}   11.30{col 46}{space 3}0.000{col 54}{space 4} 57542.01{col 67}{space 3}  81738.8
+{txt}{space 10}q2 {c |}{col 14}{res}{space 2} 23692.91{col 26}{space 2} 5748.512{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4}  12407.7{col 67}{space 3} 34978.12
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 28302.16{col 26}{space 2} 5027.226{col 37}{space 1}    5.63{col 46}{space 3}0.000{col 54}{space 4} 18432.95{col 67}{space 3} 38171.38
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 47261.05{col 26}{space 2}  5365.21{col 37}{space 1}    8.81{col 46}{space 3}0.000{col 54}{space 4} 36728.32{col 67}{space 3} 57793.78
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-6342.332{col 26}{space 2}  2588.22{col 37}{space 1}   -2.45{col 46}{space 3}0.014{col 54}{space 4} -11423.4{col 67}{space 3} -1261.26
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 1550.977{col 26}{space 2} 906.3835{col 37}{space 1}    1.71{col 46}{space 3}0.087{col 54}{space 4}-228.3923{col 67}{space 3} 3330.347
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 340511.1{col 26}{space 2}   131937{col 37}{space 1}    2.58{col 46}{space 3}0.010{col 54}{space 4} 81498.49{col 67}{space 3} 599523.8
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51751.093
+     {txt}sigma_e {c |} {res} 48543.325
+         {txt}rho {c |} {res} .53195084{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}745{txt}) = {res}8.66{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project foreign, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1603{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1320{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}2{txt},{res}750{txt}){col 67}={col 70}{res}    71.57
+{txt}corr(u_i, Xb){col 16}= {res}0.0862{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8462.908{col 37}{space 1}   -7.92{col 46}{space 3}0.000{col 54}{space 4}-83665.87{col 67}{space 3}-50438.25
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  5984.18{col 37}{space 1}   11.94{col 46}{space 3}0.000{col 54}{space 4} 59710.99{col 67}{space 3} 83206.46
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2} 41876.43{col 26}{space 2} 1994.727{col 37}{space 1}   20.99{col 46}{space 3}0.000{col 54}{space 4} 37960.52{col 67}{space 3} 45792.34
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res} 51167.748
+         {txt}rho {c |} {res} .47018982{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}750{txt}) = {res}7.87{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, replace
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2370{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1711{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}5{txt},{res}747{txt}){col 67}={col 70}{res}    46.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0722{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8083.175{col 37}{space 1}   -8.30{col 46}{space 3}0.000{col 54}{space 4} -82920.5{col 67}{space 3}-51183.62
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 69144.69{col 26}{space 2} 6173.627{col 37}{space 1}   11.20{col 46}{space 3}0.000{col 54}{space 4} 57024.97{col 67}{space 3} 81264.42
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 14739.15{col 26}{space 2} 4857.384{col 37}{space 1}    3.03{col 46}{space 3}0.002{col 54}{space 4} 5203.401{col 67}{space 3}  24274.9
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 25082.17{col 26}{space 2} 4857.384{col 37}{space 1}    5.16{col 46}{space 3}0.000{col 54}{space 4} 15546.42{col 67}{space 3} 34617.91
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 38336.35{col 26}{space 2} 4666.823{col 37}{space 1}    8.21{col 46}{space 3}0.000{col 54}{space 4}  29174.7{col 67}{space 3}    47498
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 25022.29{col 26}{space 2} 3299.942{col 37}{space 1}    7.58{col 46}{space 3}0.000{col 54}{space 4} 18544.03{col 67}{space 3} 31500.56
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res}  48871.84
+         {txt}rho {c |} {res} .49310889{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}747{txt}) = {res}8.63{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4 female_rate, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2463{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1134{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    40.63
+{txt}corr(u_i, Xb){col 16}= {res}-0.0321{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81695.25{col 26}{space 2}  9378.36{col 37}{space 1}   -8.71{col 46}{space 3}0.000{col 54}{space 4}-100106.4{col 67}{space 3}-63284.13
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 70410.43{col 26}{space 2} 6154.223{col 37}{space 1}   11.44{col 46}{space 3}0.000{col 54}{space 4} 58328.77{col 67}{space 3} 82492.08
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 24186.65{col 26}{space 2} 5748.681{col 37}{space 1}    4.21{col 46}{space 3}0.000{col 54}{space 4} 12901.14{col 67}{space 3} 35472.17
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}  29118.3{col 26}{space 2} 5011.014{col 37}{space 1}    5.81{col 46}{space 3}0.000{col 54}{space 4} 19280.93{col 67}{space 3} 38955.67
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 46391.36{col 26}{space 2} 5347.981{col 37}{space 1}    8.67{col 46}{space 3}0.000{col 54}{space 4} 35892.47{col 67}{space 3} 56890.24
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-7556.526{col 26}{space 2} 2492.269{col 37}{space 1}   -3.03{col 46}{space 3}0.003{col 54}{space 4}-12449.22{col 67}{space 3} -2663.83
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   407437{col 26}{space 2} 126169.5{col 37}{space 1}    3.23{col 46}{space 3}0.001{col 54}{space 4} 159747.5{col 67}{space 3} 655126.5
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51470.381
+     {txt}sigma_e {c |} {res} 48606.017
+         {txt}rho {c |} {res} .52859835{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.65{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4 total_stay, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2432{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0999{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1569{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    39.95
+{txt}corr(u_i, Xb){col 16}= {res}0.0458{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-70542.82{col 26}{space 2} 8178.791{col 37}{space 1}   -8.63{col 46}{space 3}0.000{col 54}{space 4}   -86599{col 67}{space 3}-54486.63
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 68355.59{col 26}{space 2} 6160.955{col 37}{space 1}   11.09{col 46}{space 3}0.000{col 54}{space 4} 56260.72{col 67}{space 3} 80450.46
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 16165.59{col 26}{space 2} 4875.225{col 37}{space 1}    3.32{col 46}{space 3}0.001{col 54}{space 4} 6594.793{col 67}{space 3} 25736.38
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24848.76{col 26}{space 2} 4841.812{col 37}{space 1}    5.13{col 46}{space 3}0.000{col 54}{space 4} 15343.56{col 67}{space 3} 34353.96
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}  41349.9{col 26}{space 2} 4808.385{col 37}{space 1}    8.60{col 46}{space 3}0.000{col 54}{space 4} 31910.33{col 67}{space 3} 50789.48
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 2159.888{col 26}{space 2} 874.5753{col 37}{space 1}    2.47{col 46}{space 3}0.014{col 54}{space 4} 442.9659{col 67}{space 3} 3876.809
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 17392.39{col 26}{space 2}  4512.28{col 37}{space 1}    3.85{col 46}{space 3}0.000{col 54}{space 4} 8534.112{col 67}{space 3} 26250.67
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 49088.172
+     {txt}sigma_e {c |} {res} 48705.886
+         {txt}rho {c |} {res} .50390903{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.75{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4 female_rate total_stay, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2492{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0496{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1101{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}7{txt},{res}745{txt}){col 67}={col 70}{res}    35.33
+{txt}corr(u_i, Xb){col 16}= {res}-0.0468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81849.01{col 26}{space 2} 9366.695{col 37}{space 1}   -8.74{col 46}{space 3}0.000{col 54}{space 4}-100237.3{col 67}{space 3}-63460.75
+{txt}{space 5}project {c |}{col 14}{res}{space 2}  69640.4{col 26}{space 2} 6162.736{col 37}{space 1}   11.30{col 46}{space 3}0.000{col 54}{space 4} 57542.01{col 67}{space 3}  81738.8
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 23692.91{col 26}{space 2} 5748.512{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4}  12407.7{col 67}{space 3} 34978.12
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 28302.16{col 26}{space 2} 5027.226{col 37}{space 1}    5.63{col 46}{space 3}0.000{col 54}{space 4} 18432.95{col 67}{space 3} 38171.38
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 47261.05{col 26}{space 2}  5365.21{col 37}{space 1}    8.81{col 46}{space 3}0.000{col 54}{space 4} 36728.32{col 67}{space 3} 57793.78
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-6342.332{col 26}{space 2}  2588.22{col 37}{space 1}   -2.45{col 46}{space 3}0.014{col 54}{space 4} -11423.4{col 67}{space 3} -1261.26
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 1550.977{col 26}{space 2} 906.3835{col 37}{space 1}    1.71{col 46}{space 3}0.087{col 54}{space 4}-228.3923{col 67}{space 3} 3330.347
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 340511.1{col 26}{space 2}   131937{col 37}{space 1}    2.58{col 46}{space 3}0.010{col 54}{space 4} 81498.49{col 67}{space 3} 599523.8
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51751.093
+     {txt}sigma_e {c |} {res} 48543.325
+         {txt}rho {c |} {res} .53195084{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}745{txt}) = {res}8.66{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/var/folders/3n/xs20lgfn0037tdqm3c71s2x40000gn/T//SD43021.000000"
+{txt}
+{com}. 
+. xtset id time_id
+{res}{txt}{col 8}panel variable:  {res}id (strongly balanced)
+{txt}{col 9}time variable:  {res}{col 25}time_id, 0 to 8
+{txt}{col 17}delta:  {res}1 unit
+{txt}
+{com}. xtreg consumption_stay_tourism cross_term project foreign, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.1603{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1320{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}2{txt},{res}750{txt}){col 67}={col 70}{res}    71.57
+{txt}corr(u_i, Xb){col 16}= {res}0.0862{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8462.908{col 37}{space 1}   -7.92{col 46}{space 3}0.000{col 54}{space 4}-83665.87{col 67}{space 3}-50438.25
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 71458.73{col 26}{space 2}  5984.18{col 37}{space 1}   11.94{col 46}{space 3}0.000{col 54}{space 4} 59710.99{col 67}{space 3} 83206.46
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 7}_cons {c |}{col 14}{res}{space 2} 41876.43{col 26}{space 2} 1994.727{col 37}{space 1}   20.99{col 46}{space 3}0.000{col 54}{space 4} 37960.52{col 67}{space 3} 45792.34
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res} 51167.748
+         {txt}rho {c |} {res} .47018982{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}750{txt}) = {res}7.87{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, replace
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2370{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1711{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}5{txt},{res}747{txt}){col 67}={col 70}{res}    46.40
+{txt}corr(u_i, Xb){col 16}= {res}0.0722{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-67052.06{col 26}{space 2} 8083.175{col 37}{space 1}   -8.30{col 46}{space 3}0.000{col 54}{space 4} -82920.5{col 67}{space 3}-51183.62
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 69144.69{col 26}{space 2} 6173.627{col 37}{space 1}   11.20{col 46}{space 3}0.000{col 54}{space 4} 57024.97{col 67}{space 3} 81264.42
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 14739.15{col 26}{space 2} 4857.384{col 37}{space 1}    3.03{col 46}{space 3}0.002{col 54}{space 4} 5203.401{col 67}{space 3}  24274.9
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 25082.17{col 26}{space 2} 4857.384{col 37}{space 1}    5.16{col 46}{space 3}0.000{col 54}{space 4} 15546.42{col 67}{space 3} 34617.91
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 38336.35{col 26}{space 2} 4666.823{col 37}{space 1}    8.21{col 46}{space 3}0.000{col 54}{space 4}  29174.7{col 67}{space 3}    47498
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 25022.29{col 26}{space 2} 3299.942{col 37}{space 1}    7.58{col 46}{space 3}0.000{col 54}{space 4} 18544.03{col 67}{space 3} 31500.56
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 48202.856
+     {txt}sigma_e {c |} {res}  48871.84
+         {txt}rho {c |} {res} .49310889{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}747{txt}) = {res}8.63{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4 female_rate, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2463{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.1551{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1134{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    40.63
+{txt}corr(u_i, Xb){col 16}= {res}-0.0321{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81695.25{col 26}{space 2}  9378.36{col 37}{space 1}   -8.71{col 46}{space 3}0.000{col 54}{space 4}-100106.4{col 67}{space 3}-63284.13
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 70410.43{col 26}{space 2} 6154.223{col 37}{space 1}   11.44{col 46}{space 3}0.000{col 54}{space 4} 58328.77{col 67}{space 3} 82492.08
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 24186.65{col 26}{space 2} 5748.681{col 37}{space 1}    4.21{col 46}{space 3}0.000{col 54}{space 4} 12901.14{col 67}{space 3} 35472.17
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2}  29118.3{col 26}{space 2} 5011.014{col 37}{space 1}    5.81{col 46}{space 3}0.000{col 54}{space 4} 19280.93{col 67}{space 3} 38955.67
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 46391.36{col 26}{space 2} 5347.981{col 37}{space 1}    8.67{col 46}{space 3}0.000{col 54}{space 4} 35892.47{col 67}{space 3} 56890.24
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-7556.526{col 26}{space 2} 2492.269{col 37}{space 1}   -3.03{col 46}{space 3}0.003{col 54}{space 4}-12449.22{col 67}{space 3} -2663.83
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   407437{col 26}{space 2} 126169.5{col 37}{space 1}    3.23{col 46}{space 3}0.001{col 54}{space 4} 159747.5{col 67}{space 3} 655126.5
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51470.381
+     {txt}sigma_e {c |} {res} 48606.017
+         {txt}rho {c |} {res} .52859835{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.65{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4 total_stay, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2432{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0999{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1569{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}6{txt},{res}746{txt}){col 67}={col 70}{res}    39.95
+{txt}corr(u_i, Xb){col 16}= {res}0.0458{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-70542.82{col 26}{space 2} 8178.791{col 37}{space 1}   -8.63{col 46}{space 3}0.000{col 54}{space 4}   -86599{col 67}{space 3}-54486.63
+{txt}{space 5}project {c |}{col 14}{res}{space 2} 68355.59{col 26}{space 2} 6160.955{col 37}{space 1}   11.09{col 46}{space 3}0.000{col 54}{space 4} 56260.72{col 67}{space 3} 80450.46
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 16165.59{col 26}{space 2} 4875.225{col 37}{space 1}    3.32{col 46}{space 3}0.001{col 54}{space 4} 6594.793{col 67}{space 3} 25736.38
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 24848.76{col 26}{space 2} 4841.812{col 37}{space 1}    5.13{col 46}{space 3}0.000{col 54}{space 4} 15343.56{col 67}{space 3} 34353.96
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2}  41349.9{col 26}{space 2} 4808.385{col 37}{space 1}    8.60{col 46}{space 3}0.000{col 54}{space 4} 31910.33{col 67}{space 3} 50789.48
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 2159.888{col 26}{space 2} 874.5753{col 37}{space 1}    2.47{col 46}{space 3}0.014{col 54}{space 4} 442.9659{col 67}{space 3} 3876.809
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 17392.39{col 26}{space 2}  4512.28{col 37}{space 1}    3.85{col 46}{space 3}0.000{col 54}{space 4} 8534.112{col 67}{space 3} 26250.67
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 49088.172
+     {txt}sigma_e {c |} {res} 48705.886
+         {txt}rho {c |} {res} .50390903{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}746{txt}) = {res}8.75{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
+{com}. xtreg consumption_stay_tourism cross_term project foreign q2 q3 q4 female_rate total_stay, fe
+{p 0 6 2}{txt}note: foreign omitted because of collinearity{p_end}
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       846
+{txt}Group variable: {res}id{txt}{col 49}Number of groups{col 67}={col 69}{res}        94
+
+{txt}R-sq:{col 49}Obs per group:
+     within  = {res}0.2492{col 63}{txt}min{col 67}={col 69}{res}         9
+{txt}     between = {res}0.0496{col 63}{txt}avg{col 67}={col 69}{res}       9.0
+{txt}     overall = {res}0.1101{col 63}{txt}max{col 67}={col 69}{res}         9
+
+{txt}{col 49}F({res}7{txt},{res}745{txt}){col 67}={col 70}{res}    35.33
+{txt}corr(u_i, Xb){col 16}= {res}-0.0468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}consumptio~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}cross_term {c |}{col 14}{res}{space 2}-81849.01{col 26}{space 2} 9366.695{col 37}{space 1}   -8.74{col 46}{space 3}0.000{col 54}{space 4}-100237.3{col 67}{space 3}-63460.75
+{txt}{space 5}project {c |}{col 14}{res}{space 2}  69640.4{col 26}{space 2} 6162.736{col 37}{space 1}   11.30{col 46}{space 3}0.000{col 54}{space 4} 57542.01{col 67}{space 3}  81738.8
+{txt}{space 5}foreign {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 10}q2 {c |}{col 14}{res}{space 2} 23692.91{col 26}{space 2} 5748.512{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4}  12407.7{col 67}{space 3} 34978.12
+{txt}{space 10}q3 {c |}{col 14}{res}{space 2} 28302.16{col 26}{space 2} 5027.226{col 37}{space 1}    5.63{col 46}{space 3}0.000{col 54}{space 4} 18432.95{col 67}{space 3} 38171.38
+{txt}{space 10}q4 {c |}{col 14}{res}{space 2} 47261.05{col 26}{space 2}  5365.21{col 37}{space 1}    8.81{col 46}{space 3}0.000{col 54}{space 4} 36728.32{col 67}{space 3} 57793.78
+{txt}{space 1}female_rate {c |}{col 14}{res}{space 2}-6342.332{col 26}{space 2}  2588.22{col 37}{space 1}   -2.45{col 46}{space 3}0.014{col 54}{space 4} -11423.4{col 67}{space 3} -1261.26
+{txt}{space 2}total_stay {c |}{col 14}{res}{space 2} 1550.977{col 26}{space 2} 906.3835{col 37}{space 1}    1.71{col 46}{space 3}0.087{col 54}{space 4}-228.3923{col 67}{space 3} 3330.347
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 340511.1{col 26}{space 2}   131937{col 37}{space 1}    2.58{col 46}{space 3}0.010{col 54}{space 4} 81498.49{col 67}{space 3} 599523.8
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} 51751.093
+     {txt}sigma_e {c |} {res} 48543.325
+         {txt}rho {c |} {res} .53195084{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}93{txt}, {res}745{txt}) = {res}8.66{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. outreg2 using did_final.tex, append
+{txt}{stata `"shellout using `"did_final.tex"'"':did_final.tex}
+{browse `"/Users/akirasato/Documents/Okamuro_Seminar/Okamuro_seminar_2020/jr_project/csv/for_analysis"' :dir}{com} : {txt}{stata `"seeout using "did_final.txt""':seeout}
+
 {com}. 
 {txt}end of do-file
 

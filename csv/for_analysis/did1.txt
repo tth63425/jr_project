@@ -1,0 +1,20 @@
+	(1)	(2)
+VARIABLES	consumption_stay_tourism	consumption_stay_tourism
+		
+cross_term	-190,165***	-190,165***
+	(13,030)	(13,016)
+project	177,018***	180,371***
+	(9,537)	(11,272)
+q2		2,322
+		(6,508)
+q3		12,665*
+		(6,508)
+q4		1,084
+		(7,971)
+Constant	41,876***	37,440***
+	(2,462)	(4,602)
+		
+Observations	752	752
+R-squared	0.319	0.324
+Standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		
